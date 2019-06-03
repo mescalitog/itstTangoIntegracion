@@ -1,0 +1,96 @@
+/**
+* 2007-2019  PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+*  @author    itstuff <info@itstuff.com.ar>
+*  @copyright 2007-2019  PrestaShop SA
+*  @license commercial license contact itstuff for details
+*  
+*
+* Don't forget to prefix your containers with your own identifier
+* to avoid any conflicts with others containers.
+*/
+
+.block-purchase-order .purchase-order {
+  padding: 1.6rem;
+  background: #f1f1f1
+}
+
+.block-purchase-order .purchase-order .alert-danger {
+  position: relative;
+  margin-top: 1.25rem;
+  background: #ff4c4c;
+  color: #fff;
+  display: none
+}
+
+.block-purchase-order .purchase-order .alert-danger:after {
+  bottom: 100%;
+  left: 10%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: #ff4c4c;
+  border-width: 10px;
+  margin-left: -10px
+}
+
+.block-purchase-order .purchase-order form {
+  text-align: center
+}
+
+.block-purchase-order .promo-input {
+  color: #232323;
+  border: 1px solid #7a7a7a;
+  height: 2.5rem;
+  text-indent: .625rem;
+  width: 50%
+}
+
+.block-purchase-order .promo-input+button {
+  margin-top: -4px;
+  text-transform: capitalize
+}
+
+.block-purchase-order .cart-summary-line .label,
+.block-purchase-order .promo-name {
+  color: #ff9a52;
+  font-weight: 600
+}
+
+.block-purchase-order .cart-summary-line .label a,
+.block-purchase-order .promo-name a {
+  font-weight: 400;
+  color: #232323;
+  display: inline-block
+}
+
+.block-purchase-order .purchase-order-button {
+  padding-left: 1.25rem;
+  margin-bottom: 1.25rem;
+  display: inline-block
+}
+
+.block-purchase-order.promo-highlighted {
+  padding: 1.25rem;
+  padding-bottom: 0;
+  margin-bottom: 0
+}

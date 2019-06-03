@@ -1,0 +1,98 @@
+
+.panel-presentation {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+
+.itst-tabs {
+  margin: 0;
+  padding: 0;
+}
+
+.itst-tabs .panel-body {
+  padding: 15px;
+  background-color: white;
+  border: azure;
+  border: 1px solid;
+  border-color: transparent #ddd;
+  color: #555;
+  cursor: default;
+}
+
+.itst-tabs nav {
+  padding: 0;
+  margin: 30px 0 0 0;
+  display: block;
+}
+.itst-tabs nav a {
+  padding: 8px 12px;
+  background-color: none;
+  color: #00aff0;
+  text-decoration: none;
+  margin: 0 5px 0 1px;
+  font-size: 15px;
+  vertical-align: top;
+  position: relative;
+  top: -5px;
+  font-family: "Ubuntu Condensed",Helvetica,Arial,sans-serif;
+  text-transform: uppercase;
+}
+.itst-tabs nav a:hover {
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  margin: 0 4px 0 0;
+  text-decoration: none;
+  color: #0077a4;
+}
+.itst-tabs nav a.active {
+  border-radius: 3px 3px 0 0;
+  background-color: #F5F8F9;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  margin: 0 4px 0 0;
+  font-size: 15px;
+  color: #000;
+}
+.itst-tabs .content {
+  margin: 0;
+  padding: 10px;
+  background-color: #F5F8F9;
+  border: 1px solid #ccc;
+  border-radius: 0 3px 3px 3px;
+}
+
+.border-none {
+  border: none !important;
+}
+
+.form-group {
+  border-top: 1px solid #eee;
+  padding: 15px 0;
+  margin: 0 !important;
+}
+
+.switch-label {
+  padding-right: 20px !important;
+}
+
+.general-tooltip {
+  font: 12px "Open Sans",Helvetica,Arial,sans-serif;
+  font-style: italic;
+  color: #959595;
+  font-weight: normal !important;
+  margin-top: 5px;
+}
+
+.clear {
+  clear: both;
+}
+.align-right {
+  text-align: right;
+}
+.padtop-20 {
+  padding-top: 20px !important;
+}
+

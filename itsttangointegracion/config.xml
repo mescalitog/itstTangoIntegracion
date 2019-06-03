@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>itsttangointegracion</name>
+	<displayName><![CDATA[ItStuff Integración con Axoft Tango]]></displayName>
+	<version><![CDATA[1.1.2]]></version>
+	<description><![CDATA[Modulo de integración para Axoft Tango]]></description>
+	<author><![CDATA[itstuff.com.ar]]></author>
+	<tab><![CDATA[administration]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>
