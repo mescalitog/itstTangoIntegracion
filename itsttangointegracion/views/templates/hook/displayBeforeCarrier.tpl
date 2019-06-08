@@ -46,10 +46,10 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
         $(function () {
-            $('#fec_entr').datetimepicker({ format: 'L',  useCurrent: false, locale: 'es',  minDate: moment().add(5, 'days'), maxDate: moment().add(60, 'days'), daysOfWeekDisabled: [0,6] });
             {if isset($fecha_entr)} 
-                $('#fec_entr').date = '{$fecha_entr}';
+                $('#fec_entr').setDate = '{$fecha_entr}';
             {/if}
+            $('#fec_entr').datetimepicker({ format: 'L',  {if isset($fecha_entr)}useCurrent: true{else}useCurrent: false{/if}, locale: 'es',  minDate: moment().add(5, 'days'), maxDate: moment().add(60, 'days'), daysOfWeekDisabled: [0,6] });
             $('#fec_entr').on('change.datetimepicker', function(e) {
                 if (e.oldDate !== e.date){
                     try
