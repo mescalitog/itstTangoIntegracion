@@ -27,6 +27,7 @@ namespace ItSt\PrestaShop\Tango\Ventas;
 
 require_once dirname(__FILE__) . '/ventas.php';
 require_once dirname(__FILE__) . '/clientes.php';
+require_once dirname(__FILE__) . '/../orderExtended.php';
 require_once dirname(__FILE__) . '/../../services/carriersServices.php';
 require_once dirname(__FILE__) . '/../../services/syncOrderServices.php';
 
@@ -80,6 +81,8 @@ class Pedidos
         }
 
         $cart = $params['cart'];
+        // Extended order data
+        $orderExtended = new \ItSt\PrestaShop\Tango\OrdersExtended($cart->id);
         $customer = new \Customer($cart->id_customer);
         $contactos = Clientes::getContactos(array('email' => $customer->email));
         $contacto = (empty($contactos['rows'])) ? null : $contactos['rows'][0];
@@ -136,6 +139,7 @@ class Pedidos
         //Shipping Costs
         $shiping_sync = \Configuration::get(Consts\ITST_TANGO_SHIPPING_SYNC, null);
         $shipping_cod_articu = \Configuration::get(Consts\ITST_TANGO_SHIPPING_PRODUCT, null);
+
         if (isset($shiping_sync) && isset($shipping_cod_articu)) {
             $renglones[] = array(
                 'COD_ARTICU' => $shipping_cod_articu,
@@ -154,6 +158,9 @@ class Pedidos
         $comp_stk = \Configuration::get(Consts\ITST_TANGO_ORDERS_COMP_STK, 0);
         $pedido = array(
             'ID_EXTERNO' => $order->reference,
+            'NRO_OC_COMP' => $orderExtended->NRO_O_COMP,
+            'FECHA_O_COMP' => $order->date_add,
+            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR)) ? $orderExtended->FECHA_ENTR : date('Y-m-d'),
             'COND_VTA' => $condVenta,
             'COD_VENDED' => $condVended,
             'COMP_STK' => $comp_stk,
@@ -163,6 +170,9 @@ class Pedidos
             'N_LISTA' => $nroLista,
             'COD_CLIENT' => $codCliente,
             'LEYENDA_1' => $newOrderStatus->name,
+            'LEYENDA_2' => isset($orderExtended->NRO_O_COMP)
+                ? 'El cliente ingreso OC:' . $orderExtended->NRO_O_COMP
+                : 'El cliente no ingreso OC',
             'renglones' => $renglones,
             // 'TIENDA' => 'E-COMMERCE',
             'ES_PEDIDO_WEB' => 0,

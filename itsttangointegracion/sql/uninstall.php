@@ -37,8 +37,8 @@ $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'itst_prices_list`';
 
 $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'itst_sync_order`';
 
+$sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'itst_orders_extended`';
+
 foreach ($sql as $query) {
-    if (Db::getInstance()->execute($query) == false) {
-        return false;
-    }
+    Db::getInstance()->execute($query);
 }

@@ -54,3 +54,7 @@ $_MODULE['<{itsttangointegracion}prestashop>configformgeneral_cf2177591512e7f497
 $_MODULE['<{itsttangointegracion}prestashop>configformgeneral_42591b19f8c34d2bab1ba6eb53048659'] = 'Debe este modulo generar un archivo de logs?';
 $_MODULE['<{itsttangointegracion}prestashop>configformgeneral_c9cc8cce247e49bae79f15173ce97354'] = 'Grabar';
 $_MODULE['<{itsttangointegracion}prestashop>configformgeneral_ef78ff2041e6bd62744cf76bb273cce1'] = 'No hay información del estado de la API';
+$_MODULE['<{itsttangointegracion}prestashop>displaybeforecarrier_d251cb88bd554f3bd6917185a694efbd'] = '¿Quieres establecer una fecha de entrega?';
+$_MODULE['<{itsttangointegracion}prestashop>displaycheckoutsummarytop_a5d718199fb494ab31cf8996a6722cd1'] = '¿Tienes un número de orden de compra?';
+$_MODULE['<{itsttangointegracion}prestashop>displaycheckoutsummarytop_0cd5055917fb9e12fe9fb0a0935e95fd'] = 'Número de Orden de Compra';
+$_MODULE['<{itsttangointegracion}prestashop>displaycheckoutsummarytop_ec211f7c20af43e742bf2570c3cb84f9'] = 'Agregar';

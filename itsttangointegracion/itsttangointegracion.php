@@ -35,6 +35,7 @@ require_once dirname(__FILE__) . '/classes/helpers.php';
 require_once dirname(__FILE__) . '/classes/ventas/pedidos.php';
 require_once dirname(__FILE__) . '/classes/ventas/talonarios.php';
 require_once dirname(__FILE__) . '/classes/general/general.php';
+require_once dirname(__FILE__) . '/classes/orderExtended.php';
 
 use ItSt\PrestaShop\Tango\Constantes as Consts;
 use ItSt\PrestaShop\Tango\Helpers as Helpers;
@@ -77,7 +78,7 @@ class ItstTangoIntegracion extends Module
         $this->name = 'itsttangointegracion';
         // $this->className = 'ItstTangoIntegracion';
         $this->tab = 'administration';
-        $this->version = '1.1.2';
+        $this->version = '1.3.1';
         $this->author = 'itstuff.com.ar';
         $this->need_instance = 0;
 
@@ -128,7 +129,9 @@ class ItstTangoIntegracion extends Module
             $this->registerHook('actionOrderStatusPostUpdate') &&
             // Para mantener la lista de transportes actualizada
             $this->registerHook('actionCarrierUpdate') &&
-            // Para ingresar el numero de OC
+            // Para ingresar el numero de OC (solo queda una)
+            $this->registerHook('displayCheckoutSummaryTop') &&
+            // Elegir fecha de entrega
             $this->registerHook('displayBeforeCarrier');
         // Registracion y Clientes
         /*
@@ -184,6 +187,7 @@ class ItstTangoIntegracion extends Module
             $this->unregisterHook('backOfficeHeader') &&
             $this->unregisterHook('actionOrderStatusPostUpdate') &&
             $this->unregisterHook('actionCarrierUpdate') &&
+            $this->unregisterHook('displayCheckoutSummaryTop') &&
             $this->unregisterHook('displayBeforeCarrier');
 
 
@@ -262,8 +266,50 @@ class ItstTangoIntegracion extends Module
      */
     public function hookHeader()
     {
-        $this->context->controller->addJS($this->_path . '/views/js/front.js');
-        $this->context->controller->addCSS($this->_path . '/views/css/front.css');
+        $this->context->controller->registerStylesheet(
+            'module-front-css',
+            $this->_path . '/views/css/front.css',
+            [ 'media' => 'all', 'priority' => 200, ]
+        );
+        $this->context->controller->registerJavascript(
+            'module-front-js', // Unique ID
+            $this->_path . '/views/js/front.js', // JS path
+            [
+                'priority' => 200,
+                'attribute' => 'sync',
+            ]
+        );
+
+        // Font Awesome
+        $this->context->controller->registerJavascript(
+            'font-awesome-js', // Unique ID
+            'https://use.fontawesome.com/2b8d3dc4a1.js', // JS path
+            ['server' => 'remote', 'position' => 'bottom', 'priority' => 150] // Arguments
+        );
+        // Date Picker
+        $this->context->controller->registerJavascript(
+            'module-moment-js', // Unique ID
+            $this->_path . '/views/js/moment.min.js', // JS path
+            ['priority' => 100, 'attribute' => 'sync',]
+        );
+        $this->context->controller->registerJavascript(
+            'module-moment-locale-es-js', // Unique ID
+            $this->_path . '/views/js/es.js', // JS path
+            ['priority' => 150, 'attribute' => 'sync',]
+        );
+
+        $this->context->controller->registerJavascript(
+            'tempusdominus-js', // Unique ID
+            'https://cdnjs.cloudflare.com/ajax/libs/'
+                . 'tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js', // JS path
+            ['server' => 'remote', 'position' => 'bottom', 'priority' => 150] // Arguments
+        );
+        $this->context->controller->registerStylesheet(
+            'tempusdominus-css',
+            'https://cdnjs.cloudflare.com/ajax/libs/'
+                . 'tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css',
+            ['server' => 'remote', 'media' => 'all', 'priority' => 200,]
+        );
     }
 
     /**
@@ -326,16 +372,65 @@ class ItstTangoIntegracion extends Module
         return Db::getInstance()->execute($query);
     }
 
-    public function hookdisplayBeforeCarrier($params)
+    public function hookDisplayCheckoutSummaryTop($params)
     {
         // FIXME: corregir para produccion
         $syncOrders = Configuration::get(Consts\ITST_TANGO_ORDERS_SYNC, false);
         $syncOrders = 1;
+        $cart_id = $params['cart']->id;
+        $orderExtended = new ItSt\PrestaShop\Tango\OrdersExtended($cart_id);
+        $orderExtended->id_cart = $cart_id;
+        $orderExtended->save();
         if ($syncOrders) {
             $this->context->smarty->assign(array(
                 'ps_version' => (float)_PS_VERSION_,
                 'params' => Tools::jsonEncode($params),
-                'static_token' => Tools::getToken(false),
+                'nro_o_comp' => $orderExtended->NRO_O_COMP,
+                'url' => Context::getContext()->link->getModuleLink(
+                    'itsttangointegracion',
+                    'ordersextended',
+                    array(
+                        'token' => Tools::getToken(false),
+                        'id_cart' => $cart_id,
+                        'action' => 'update-extended'
+                    )
+                )
+            ));
+            return $this->display(__FILE__, 'views/templates/hook/displayCheckoutSummaryTop.tpl');
+        }
+    }
+
+    public function hookDisplayBeforeCarrier($params)
+    {
+        // FIXME: corregir para produccion
+        $syncOrders = Configuration::get(Consts\ITST_TANGO_ORDERS_SYNC, false);
+        $syncOrders = 1;
+        $cart_id = $params['cart']->id;
+        $orderExtended = new ItSt\PrestaShop\Tango\OrdersExtended($cart_id);
+        $orderExtended->id_cart = $cart_id;
+        $orderExtended->save();
+        if ($syncOrders) {
+            $this->context->smarty->assign(array(
+                'ps_version' => (float)_PS_VERSION_,
+                'params' => Tools::jsonEncode($params),
+                'fecha_entr' => $orderExtended->FECHA_ENTR,
+                'module'     => 'itsttangointegracion',
+                'fc'         => 'module',
+                'controller' => 'ordersextended',
+                'url'        => $this->context->link->getBaseLink(),
+                'id_cart'    => $cart_id,
+                'token'      => Tools::getToken(false),
+                /*
+                'url' => Context::getContext()->link->getModuleLink(
+                    'itsttangointegracion',
+                    'ordersextended',
+                    array(
+                        'token' => Tools::getToken(false),
+                        'id_cart' => $cart_id,
+                        'action' => 'update-extended'
+                    )
+                )*/
+                
             ));
             return $this->display(__FILE__, 'views/templates/hook/displayBeforeCarrier.tpl');
         }

@@ -32,18 +32,17 @@ if (!defined('_PS_VERSION_')) {
  * usefull when you modify your database, or register a new hook ...
  * Don't forget to create one file per version.
  */
-function upgrade_module_1_1_9($object, $install = false)
+function upgrade_module_1_3_0($module, $install = false)
 {
     $sql = array();
-    if ($object->active && !$install) {
-        $sql[] = 'ALTER TABLE `' . _DB_PREFIX_ . 'itst_sync_order` 
-        ADD COLUMN `retries` INT NULL DEFAULT 0 AFTER `error_message`,
-        ADD COLUMN `valid_until` DATETIME NULL AFTER `retries`;';
+    if ($module->active && !$install) {
+        $sql[] = 'ALTER TABLE  `' . _DB_PREFIX_ . 'itst_orders_extended` 
+      ADD COLUMN `FECHA_ENTR` DATE NULL AFTER `NRO_OC_COMP`;';
 
         foreach ($sql as $query) {
             Db::getInstance()->execute($query);
         }
-        return true;
     }
-    return true;
+
+    return ($module->registerHook('displayBeforeCarrier'));
 }

@@ -71,4 +71,7 @@ namespace ItSt\PrestaShop\Tango\Constantes {
     // Parametros
     // Cantidad Maxima de Errores antes de abortar
     const ITST_TANGO_SYNC_CATEGORY = 'NUEVOS IMPORTADOS TANGO';
+
+    //Orden de Compra
+    const ITST_OC_SUBMIT = 'ITST_OC_SUBMIT';
 }

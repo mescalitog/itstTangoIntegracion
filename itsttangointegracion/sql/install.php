@@ -26,7 +26,7 @@
 
 $sql = array();
 
-$sql[] = 'CREATE TABLE `' . _DB_PREFIX_ . 'itst_tango_carriers` (
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_tango_carriers` (
     `id_carrier_transporte` INT NOT NULL AUTO_INCREMENT,
     `COD_TRANSP` VARCHAR(10) NULL,
     `id_carrier` INT(10) UNSIGNED NULL,
@@ -41,7 +41,7 @@ $sql[] = 'CREATE TABLE `' . _DB_PREFIX_ . 'itst_tango_carriers` (
       ON UPDATE NO ACTION);
   ';
 
-$sql[] = 'CREATE TABLE `' . _DB_PREFIX_ . 'itst_prices_list` (
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_prices_list` (
     `id_prices_list` INT NOT NULL AUTO_INCREMENT,
     `order` INT NULL,
     `NRO_DE_LIS` INT NULL,
@@ -52,7 +52,7 @@ $sql[] = 'CREATE TABLE `' . _DB_PREFIX_ . 'itst_prices_list` (
     INDEX `itst_prices_list_order` (`order` ASC));
   ';
 
-$sql[] = 'CREATE TABLE `' . _DB_PREFIX_ . 'itst_sync_order` (
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_sync_order` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `id_order` INT(11) NULL,
     `id_order_state` INT NULL,
@@ -67,6 +67,25 @@ $sql[] = 'CREATE TABLE `' . _DB_PREFIX_ . 'itst_sync_order` (
     `updated_at` DATETIME NULL,
     PRIMARY KEY (`id`),
     INDEX `itst_sync_order_order` (`id_order` ASC));';
+
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_orders_extended` (
+    `id_cart` INT(10) unsigned NOT NULL,
+    `NRO_O_COMP` VARCHAR(14) NULL,
+    `NRO_OC_COMP` VARCHAR(20) NULL,
+    `FECHA_ENTR` DATE NULL,
+    `id_shop_group` int(11) unsigned NOT NULL DEFAULT 1,
+    `id_shop` int(11) unsigned NOT NULL DEFAULT 1,
+    `current_state` int(10) unsigned NOT NULL,
+    `secure_key` varchar(32) NOT NULL DEFAULT -1,
+    `date_add` datetime NOT NULL,
+    `date_upd` datetime NOT NULL,
+    PRIMARY KEY (`id_cart`),
+    KEY `id_shop_group` (`id_shop_group`),
+    KEY `current_state` (`current_state`),
+    KEY `id_shop` (`id_shop`),
+    KEY `date_add` (`date_add`)
+    );
+  ';
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {
