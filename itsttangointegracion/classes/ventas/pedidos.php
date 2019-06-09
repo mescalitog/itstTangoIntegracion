@@ -111,13 +111,13 @@ class Pedidos
         $products = $cart->getProducts();
         $talon_ped = \Configuration::get(Consts\ITST_TANGO_ORDERS_TALONARIO, false);
         $logger->addLog(
-            'createPedidoOrderStatusPostUpdate;newOrderStatus=' . \Tools::jsonEncode($newOrderStatus),
+            'createPedidoOrderStatusPostUpdate;newOrderStatus:' . \Tools::jsonEncode($newOrderStatus),
             Consts\SEVERITY_DEBUG,
             null,
             'itsttangointegracion::ventas::pedidos'
         );
         $logger->addLog(
-            'createPedidoOrderStatusPostUpdate;order=' . \Tools::jsonEncode($order),
+            'createPedidoOrderStatusPostUpdate;order:' . \Tools::jsonEncode($order),
             Consts\SEVERITY_DEBUG,
             null,
             'itsttangointegracion::ventas::pedidos'
@@ -140,7 +140,7 @@ class Pedidos
         $shiping_sync = \Configuration::get(Consts\ITST_TANGO_SHIPPING_SYNC, null);
         $shipping_cod_articu = \Configuration::get(Consts\ITST_TANGO_SHIPPING_PRODUCT, null);
 
-        if (isset($shiping_sync) && isset($shipping_cod_articu)) {
+        if (isset($shiping_sync) && isset($shipping_cod_articu) && ($shipping_cod_articu)) {
             $renglones[] = array(
                 'COD_ARTICU' => $shipping_cod_articu,
                 'Descripcion' => 'Costo de Envio',
@@ -181,7 +181,7 @@ class Pedidos
         );
 
         $logger->addLog(
-            'createPedidoOrderStatusPostUpdate;pedido =' . \Tools::jsonEncode($pedido),
+            'createPedidoOrderStatusPostUpdate;pedido:' . \Tools::jsonEncode($pedido),
             Consts\SEVERITY_DEBUG,
             null,
             'itsttangointegracion'
@@ -191,7 +191,7 @@ class Pedidos
         $result = TangoApi::instance()->createPedido($talon_ped, $pedido);
         Orders\ItstTangoSyncOrders::setOrderSyncResult($order, $result);
         $logger->addLog(
-            'createPedidoOrderStatusPostUpdate;result =' . \Tools::jsonEncode($result),
+            'createPedidoOrderStatusPostUpdate;result:' . \Tools::jsonEncode($result),
             Consts\SEVERITY_DEBUG,
             null,
             'itsttangointegracion'

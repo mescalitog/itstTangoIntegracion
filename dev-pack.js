@@ -1,7 +1,15 @@
 const fs = require('fs');
 const archiver = require('archiver');
 
-const output = fs.createWriteStream('pack/itsttangointegracion.zip');
+const rawPack = fs.readFileSync("./package.json");
+const packData = JSON.parse(rawPack.toString());
+
+const path = `pack/${packData.version}`;
+if (!fs.existsSync(path)) {
+  fs.mkdirSync(path);
+}
+
+const output = fs.createWriteStream(`${path}/itsttangointegracion.zip`);
 const archive = archiver('zip');
 
 output.on('close', () => {

@@ -62,7 +62,14 @@ class ItsttangointegracionOrdersextendedModuleFrontController extends ModuleFron
                 if (isset($this->variables['fecha_entr'])) {
                     $orderExtended->FECHA_ENTR = $this->variables['fecha_entr'];
                 }
-                $orderExtended->save();
+                $result = $orderExtended->save();
+                if (!$result) {
+                    $this->errors[] = $this->trans(
+                        'Ocurrió un error actualizando los datos.',
+                        array(),
+                        'itsttangointegracion'
+                    );
+                }
             } else {
                 $logger->addLog(
                     'prostProcess;token and secureKey don\'t match',
@@ -72,9 +79,29 @@ class ItsttangointegracionOrdersextendedModuleFrontController extends ModuleFron
                 );
             }
         }
-        if (!$ajax) {
-            \Tools::redirect('index.php?controller=order');
+
+        if ($ajax && !$this->errors) {
+            $this->ajaxRender(Tools::jsonEncode([
+                'success' => true,
+                'nro_o_comp' => $this->variables['nro_o_comp'],
+                'fecha_entr' => $this->variables['fecha_entr'],
+                'errors' => empty($this->updateOperationError) ? '' : reset($this->updateOperationError),
+            ]));
+            return;
         }
+
+        if ($ajax && $this->errors) {
+            $this->ajaxRender(Tools::jsonEncode([
+                'hasError' => true,
+                'errors' => $this->errors
+            ]));
+            return;
+        }
+
+        // Not ajax
+        // \Tools::redirect('index.php?controller=order');
+        $this->redirectWithNotifications('index.php?controller=order');
+        return;
     }
 
     /**
