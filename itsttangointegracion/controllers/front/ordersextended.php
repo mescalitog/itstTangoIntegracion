@@ -77,7 +77,18 @@ class ItsttangointegracionOrdersextendedModuleFrontController extends ModuleFron
                     409,
                     'itsttangointegracion'
                 );
+                $this->errors[] = $this->trans(
+                    'Security token don\'t match.',
+                    array(),
+                    'itsttangointegracion'
+                );                
             }
+        } else {
+            $this->errors[] = $this->trans(
+                'The action is not supported.',
+                array(),
+                'itsttangointegracion'
+            );
         }
 
         if ($ajax && !$this->errors) {

@@ -18,3 +18,14 @@ Instalar
 
 Todo
 
+# Changelog
+
+## [1.3.3] - 2019-06-01
+### Added
+- changelog to README.md
+
+### Changed
+- Corrección del calculo de formulas en creacion de pedidos. Se excluyen productos con formulas.
+
+### Removed
+- none

@@ -419,18 +419,7 @@ class ItstTangoIntegracion extends Module
                 'controller' => 'ordersextended',
                 'url'        => $this->context->link->getBaseLink(),
                 'id_cart'    => $cart_id,
-                'token'      => Tools::getToken(false),
-                /*
-                'url' => Context::getContext()->link->getModuleLink(
-                    'itsttangointegracion',
-                    'ordersextended',
-                    array(
-                        'token' => Tools::getToken(false),
-                        'id_cart' => $cart_id,
-                        'action' => 'update-extended'
-                    )
-                )*/
-                
+                'token'      => Tools::getToken(false),                
             ));
             return $this->display(__FILE__, 'views/templates/hook/displayBeforeCarrier.tpl');
         }
