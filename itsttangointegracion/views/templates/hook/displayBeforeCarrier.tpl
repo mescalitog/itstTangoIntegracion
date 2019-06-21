@@ -54,7 +54,7 @@
                 if (e.oldDate !== e.date){
                     try
                     {
-                        var fecha_entr = moment($('#fec_entr').viewDate).format("YYYY-MM-DD");
+                        var fecha_entr = moment(e.date).format("YYYY-MM-DD");
                         resAjax = $.ajax({
                             type: "POST",
                             url: "{$url}",
@@ -69,6 +69,13 @@
                                 token: "{$token}",
                                 fecha_entr: fecha_entr
                             },
+                            success : function(res)
+                                {
+                                    if (res == 'ok')
+                                        showSuccessMessage("{l s='Update successful' d='Admin.Notifications.Success'}");
+                                    else
+                                        showErrorMessage("{l s='Unable to update settings.' d='Admin.Notifications.Error'}");
+                                }
                         });
                     }
                     catch(e) {

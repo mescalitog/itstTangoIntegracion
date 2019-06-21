@@ -35,6 +35,8 @@ use ItSt\PrestaShop\Tango\Constantes as Consts;
 use ItSt\PrestaShop\Tango\Helpers as Helpers;
 use ItSt\PrestaShop\Tango\Carriers as Carriers;
 use ItSt\PrestaShop\Tango\Orders as Orders;
+use DateTime;
+use DateInterval;
 
 use TangoApi;
 
@@ -156,11 +158,14 @@ class Pedidos
         // http://www.doblelink.com/blog/cambiar-los-campos-siret-y-ape-en-prestashop/
         // FIXME: es pedido web, tienda, web_order_id
         $comp_stk = \Configuration::get(Consts\ITST_TANGO_ORDERS_COMP_STK, 0);
+        $fecha_entr = new DateTime();
+        $fecha_entr->add(new DateInterval('P7D'));
+
         $pedido = array(
             'ID_EXTERNO' => $order->reference,
             'NRO_OC_COMP' => $orderExtended->NRO_O_COMP,
             'FECHA_O_COMP' => $order->date_add,
-            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR)) ? $orderExtended->FECHA_ENTR : date('Y-m-d'),
+            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR)) ? $orderExtended->FECHA_ENTR : $fecha_entr->format('Y-m-d'),
             'COND_VTA' => $condVenta,
             'COD_VENDED' => $condVended,
             'COMP_STK' => $comp_stk,
@@ -177,6 +182,7 @@ class Pedidos
             // 'TIENDA' => 'E-COMMERCE',
             'ES_PEDIDO_WEB' => 0,
             'ESTADO' => 1,
+            'PORC_DESC' => $order->total_discounts,
             'COD_TRANSP' => (isset($transporte['COD_TRANSP'])) ? $transporte['COD_TRANSP'] : null
         );
 

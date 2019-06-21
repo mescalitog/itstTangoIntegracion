@@ -69,6 +69,12 @@ class ItsttangointegracionOrdersextendedModuleFrontController extends ModuleFron
                         array(),
                         'itsttangointegracion'
                     );
+                } else {
+                    $this->success[] = $this->trans(
+                        'La orden fue actualizada.',
+                        array(),
+                        'itsttangointegracion'
+                    );
                 }
             } else {
                 $logger->addLog(
@@ -93,10 +99,9 @@ class ItsttangointegracionOrdersextendedModuleFrontController extends ModuleFron
 
         if ($ajax && !$this->errors) {
             $this->ajaxRender(Tools::jsonEncode([
-                'success' => true,
+                'success' => $this->success,
                 'nro_o_comp' => $this->variables['nro_o_comp'],
-                'fecha_entr' => $this->variables['fecha_entr'],
-                'errors' => empty($this->updateOperationError) ? '' : reset($this->updateOperationError),
+                'fecha_entr' => $this->variables['fecha_entr']
             ]));
             return;
         }
@@ -104,15 +109,14 @@ class ItsttangointegracionOrdersextendedModuleFrontController extends ModuleFron
         if ($ajax && $this->errors) {
             $this->ajaxRender(Tools::jsonEncode([
                 'hasError' => true,
-                'errors' => $this->errors
+                'errors' => $this->errors,
+                'success' => $this->success
             ]));
             return;
         }
 
         // Not ajax
-        // \Tools::redirect('index.php?controller=order');
-        $this->redirectWithNotifications('index.php?controller=order');
-        return;
+        return $this->redirectWithNotifications("/index.php?controller=order");
     }
 
     /**
