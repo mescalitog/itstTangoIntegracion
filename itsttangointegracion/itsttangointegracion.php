@@ -78,7 +78,7 @@ class ItstTangoIntegracion extends Module
         $this->name = 'itsttangointegracion';
         // $this->className = 'ItstTangoIntegracion';
         $this->tab = 'administration';
-        $this->version = '1.3.4';
+        $this->version = '1.3.5';
         $this->author = 'itstuff.com.ar';
         $this->need_instance = 0;
 

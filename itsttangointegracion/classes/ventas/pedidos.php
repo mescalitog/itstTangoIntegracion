@@ -160,29 +160,30 @@ class Pedidos
         $comp_stk = \Configuration::get(Consts\ITST_TANGO_ORDERS_COMP_STK, 0);
         $fecha_entr = new DateTime();
         $fecha_entr->add(new DateInterval('P7D'));
-
+        $porc_desc = ($order->total_discounts * 100 /  $order->total_products_wt);
         $pedido = array(
             'ID_EXTERNO' => $order->reference,
             'NRO_OC_COMP' => $orderExtended->NRO_O_COMP,
-            'FECHA_O_COMP' => $order->date_add,
-            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR)) ? $orderExtended->FECHA_ENTR : $fecha_entr->format('Y-m-d'),
+            'FECHA_O_COMP' => (new DateTime($order->date_add))->format('c'),
+            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR)) ? $orderExtended->FECHA_ENTR : $fecha_entr->format('c'),
             'COND_VTA' => $condVenta,
             'COD_VENDED' => $condVended,
             'COMP_STK' => $comp_stk,
             'COD_SUCURS' => '',
             'COTIZ' => '',
-            'FECHA_PEDI' => $order->date_add,
+            'FECHA_PEDI' => (new DateTime($order->date_add))->format('c'),
             'N_LISTA' => $nroLista,
             'COD_CLIENT' => $codCliente,
             'LEYENDA_1' => $newOrderStatus->name,
-            'LEYENDA_2' => isset($orderExtended->NRO_O_COMP)
+            'LEYENDA_2' => (isset($orderExtended->NRO_O_COMP) && !empty($orderExtended->NRO_O_COMP))
                 ? 'El cliente ingreso OC:' . $orderExtended->NRO_O_COMP
                 : 'El cliente no ingreso OC',
             'renglones' => $renglones,
             // 'TIENDA' => 'E-COMMERCE',
             'ES_PEDIDO_WEB' => 0,
             'ESTADO' => 1,
-            'PORC_DESC' => $order->total_discounts,
+            'TOTAL_PEDI' => $order->total_products_wt + $order->total_shipping,
+            'PORC_DESC' => $porc_desc,
             'COD_TRANSP' => (isset($transporte['COD_TRANSP'])) ? $transporte['COD_TRANSP'] : null
         );
 

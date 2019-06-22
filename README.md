@@ -30,9 +30,10 @@ Todo
 ### Removed
 - none
 
-## [1.3.4] - 2019-06-21
+## [1.3.5] - 2019-06-21
 ### Added
 - porcentaje de descuento al crear pedido
+- Fechas en formato ISO 8601
 
 ### Changed
 - none
