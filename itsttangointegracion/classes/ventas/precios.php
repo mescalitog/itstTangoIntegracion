@@ -203,8 +203,7 @@ class Precios
                             . '}',
                         Consts\SEVERITY_DEBUG,
                         0,
-                        'itsttangointegracion::ventas',
-                        $combination['id_product_attribute']
+                        'itsttangointegracion::ventas'
                     );
                     // El mensaje de error lo loguea la api, me fijo si tengo el precio
                     if (isset($precio['PRECIO'])

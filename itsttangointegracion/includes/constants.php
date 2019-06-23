@@ -55,6 +55,7 @@ namespace ItSt\PrestaShop\Tango\Constantes {
     const ITST_TANGO_ORDERS_CLIENTE_OCACIONAL = '000000';
     const ITST_TANGO_ORDERS_RETRIES = 'ITST_TANGO_ORDERS_RETRIES';
     const ITST_TANGO_ORDERS_VALID_DAYS = 'ITST_TANGO_ORDERS_VALID_DAYS';
+    const ITST_TANGO_ORDERS_TAXES = 'ITST_TANGO_ORDERS_TAXES';
 
     //Transportes
     // Que producto usamos en tango para cargar el valor del transporte

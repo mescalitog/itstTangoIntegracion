@@ -134,6 +134,17 @@ class ItstConfigFormsOrders extends ItstConfigForms
                     ),
                     array(
                         'type' => 'switch',
+                        'label' => self::$module->l('Include Taxes in products', 'itsttangointegracion'),
+                        'name' => Consts\ITST_TANGO_ORDERS_TAXES,
+                        'is_bool' => true,
+                        'desc' => self::$module->l('Should synchronize product prices including taxes?'),
+                        'values' => array(
+                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
+                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                        ),
+                    ),                    
+                    array(
+                        'type' => 'switch',
                         'label' => self::$module->l('Stock Compromise', 'itsttangointegracion'),
                         'name' => Consts\ITST_TANGO_ORDERS_COMP_STK,
                         'is_bool' => true,
@@ -201,6 +212,7 @@ class ItstConfigFormsOrders extends ItstConfigForms
             Consts\ITST_TANGO_ORDERS_TALONARIO => Configuration::get(Consts\ITST_TANGO_ORDERS_TALONARIO, false),
             Consts\ITST_TANGO_ORDERS_RETRIES => Configuration::get(Consts\ITST_TANGO_ORDERS_RETRIES, false),
             Consts\ITST_TANGO_ORDERS_VALID_DAYS => Configuration::get(Consts\ITST_TANGO_ORDERS_VALID_DAYS, false),
+            Consts\ITST_TANGO_ORDERS_TAXES => Configuration::get(Consts\ITST_TANGO_ORDERS_TAXES, false),
         );
     }
 

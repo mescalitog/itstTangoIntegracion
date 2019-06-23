@@ -40,3 +40,13 @@ Todo
 
 ### Removed
 - none
+
+## [1.3.6] - 2019-06-23
+### Added
+- none
+
+### Changed
+- parametro en configuracion de orden para sincronizar con o sin impuestos. [#1081](https://itstuff.com.ar/redmine/issues/1081)
+
+### Removed
+- none

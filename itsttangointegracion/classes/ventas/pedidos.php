@@ -63,7 +63,15 @@ class Pedidos
             $this->context = \Context::getContext();
         }
 
+        $order_taxes = \Configuration::get(Consts\ITST_TANGO_ORDERS_TAXES, false);
+        $talon_ped = \Configuration::get(Consts\ITST_TANGO_ORDERS_TALONARIO, false);
+        //Shipping Costs
+        $shiping_sync = \Configuration::get(Consts\ITST_TANGO_SHIPPING_SYNC, null);
+        $shipping_cod_articu = \Configuration::get(Consts\ITST_TANGO_SHIPPING_PRODUCT, null);
+        $comp_stk = \Configuration::get(Consts\ITST_TANGO_ORDERS_COMP_STK, 0);
+
         $logger = Helpers\ItStLogger::instance();
+
         // Rendondeo los precios?
         $roundPrices = true;
 
@@ -111,7 +119,6 @@ class Pedidos
         );
         // Productos
         $products = $cart->getProducts();
-        $talon_ped = \Configuration::get(Consts\ITST_TANGO_ORDERS_TALONARIO, false);
         $logger->addLog(
             'createPedidoOrderStatusPostUpdate;newOrderStatus:' . \Tools::jsonEncode($newOrderStatus),
             Consts\SEVERITY_DEBUG,
@@ -127,21 +134,20 @@ class Pedidos
         $renglones = array();
 
         foreach ($products as $product) {
+            $precio = ($order_taxes) ? $product['price_wt'] : $product['price'];
             $renglon = array(
                 'COD_ARTICU' => $product['reference'],
                 'Descripcion' => $product['name'],
                 'CANT_PEDID' => $product['quantity'],
                 'CANT_A_FAC' => $product['quantity'],
                 'DESCUENTO' => 0,
-                'PRECIO' => $roundPrices ? round($product['price_wt']) : $product['price_wt'],
+                'PRECIO' => $roundPrices ? round($precio) : $precio,
                 'COD_CLASIF' => ''
             );
             $renglones[] = $renglon;
         }
-        //Shipping Costs
-        $shiping_sync = \Configuration::get(Consts\ITST_TANGO_SHIPPING_SYNC, null);
-        $shipping_cod_articu = \Configuration::get(Consts\ITST_TANGO_SHIPPING_PRODUCT, null);
 
+        $shipping_precio = ($order_taxes) ? $order->total_shipping_tax_incl : $order->total_shipping_tax_excl;
         if (isset($shiping_sync) && isset($shipping_cod_articu) && ($shipping_cod_articu)) {
             $renglones[] = array(
                 'COD_ARTICU' => $shipping_cod_articu,
@@ -150,17 +156,17 @@ class Pedidos
                 'CANT_A_FAC' => 1,
                 'CANT_A_DES' => 0,
                 'DESCUENTO' => 0,
-                'PRECIO' => $order->total_shipping,
+                'PRECIO' => $roundPrices ? round($shipping_precio) : $shipping_precio,
                 'COD_CLASIF' => ''
             );
         }
         // FIXME: CUIT y COD_CLIENT reemplazando SIRET y APE
         // http://www.doblelink.com/blog/cambiar-los-campos-siret-y-ape-en-prestashop/
         // FIXME: es pedido web, tienda, web_order_id
-        $comp_stk = \Configuration::get(Consts\ITST_TANGO_ORDERS_COMP_STK, 0);
         $fecha_entr = new DateTime();
         $fecha_entr->add(new DateInterval('P7D'));
-        $porc_desc = ($order->total_discounts * 100 /  $order->total_products_wt);
+        // $porc_desc = ($order->total_discounts * 100 /  $order->total_products_wt);
+        $porc_desc = ($order_taxes) ? ($order->total_discounts_tax_incl * 100 /  $order->total_products_wt) : ($order->total_discounts_tax_excl * 100 /  $order->total_products);
         $pedido = array(
             'ID_EXTERNO' => $order->reference,
             'NRO_OC_COMP' => $orderExtended->NRO_O_COMP,
@@ -182,7 +188,7 @@ class Pedidos
             // 'TIENDA' => 'E-COMMERCE',
             'ES_PEDIDO_WEB' => 0,
             'ESTADO' => 1,
-            'TOTAL_PEDI' => $order->total_products_wt + $order->total_shipping,
+            'TOTAL_PEDI' => ($order_taxes) ? ($order->total_products_wt + $order->total_shipping_tax_incl) : ($order->total_products + $order->total_shipping_tax_excl),
             'PORC_DESC' => $porc_desc,
             'COD_TRANSP' => (isset($transporte['COD_TRANSP'])) ? $transporte['COD_TRANSP'] : null
         );
