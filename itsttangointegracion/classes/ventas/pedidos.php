@@ -166,12 +166,13 @@ class Pedidos
         $fecha_entr = new DateTime();
         $fecha_entr->add(new DateInterval('P7D'));
         // $porc_desc = ($order->total_discounts * 100 /  $order->total_products_wt);
-        $porc_desc = ($order_taxes) ? ($order->total_discounts_tax_incl * 100 /  $order->total_products_wt) : ($order->total_discounts_tax_excl * 100 /  $order->total_products);
+        $total_order_wt = $order->total_products_wt + $order->total_shipping_tax_incl;
+        $porc_desc = ($order->total_discounts_tax_incl * 100 /  $total_order_wt);
         $pedido = array(
             'ID_EXTERNO' => $order->reference,
             'NRO_OC_COMP' => $orderExtended->NRO_O_COMP,
             'FECHA_O_COMP' => (new DateTime($order->date_add))->format('c'),
-            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR)) ? $orderExtended->FECHA_ENTR : $fecha_entr->format('c'),
+            'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR) && ($orderExtended->FECHA_ENTR <> '0000-00-00')) ? $orderExtended->FECHA_ENTR : $fecha_entr->format('c'),
             'COND_VTA' => $condVenta,
             'COD_VENDED' => $condVended,
             'COMP_STK' => $comp_stk,
@@ -188,7 +189,7 @@ class Pedidos
             // 'TIENDA' => 'E-COMMERCE',
             'ES_PEDIDO_WEB' => 0,
             'ESTADO' => 1,
-            'TOTAL_PEDI' => ($order_taxes) ? ($order->total_products_wt + $order->total_shipping_tax_incl) : ($order->total_products + $order->total_shipping_tax_excl),
+            'TOTAL_PEDI' => ($order_taxes) ? ($order->total_paid_tax_incl ) : ($order->total_paid_tax_excl),
             'PORC_DESC' => $porc_desc,
             'COD_TRANSP' => (isset($transporte['COD_TRANSP'])) ? $transporte['COD_TRANSP'] : null
         );

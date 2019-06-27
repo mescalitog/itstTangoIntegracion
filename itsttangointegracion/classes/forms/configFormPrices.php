@@ -53,9 +53,11 @@ class ItstConfigFormsPrices extends ItstConfigForms
     const SETTINGS_SUBMIT = 'itst_config_lists_submit';
     const ADD_TO_LIST = 'itst_config_lists_add';
     const SUBMIT_ADD_TO_LIST = 'itst_config_lists_add_submit';
-    const UPDATE_LIST = 'updateItstTangoIntegracion';
+    //Este lo genera la lista de presta, por eso tiene otro formato
+    const UPDATE_LIST = 'updateitsttangointegracion';
     const SUBMIT_UPDATE_LIST = 'itst_config_lists_update_submit';
-    const SUBMIT_DELETE_LIST = 'deleteItstTangoIntegracion';
+    //Este lo genera la lista de presta, por eso tiene otro formato
+    const SUBMIT_DELETE_LIST = 'deleteitsttangointegracion';
     const MIN_API_VERSION = '1.0';
 
     const ISO_WARNING =
@@ -135,7 +137,6 @@ class ItstConfigFormsPrices extends ItstConfigForms
                 || Tools::isSubmit(self::UPDATE_LIST))
             && (!isset($submit_ok) || !$submit_ok)
         ) {
-            parent::setSelectedTab("prices-settings");
             $back_url = $context->link->getAdminLink('AdminModules', false)
                 . '&configure=' . self::$module->name
                 . '&tab_module=' . self::$module->tab

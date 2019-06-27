@@ -50,10 +50,12 @@ class ItstConfigFormsCarriers extends ItstConfigForms
 {
     const SETTINGS_CARRIERS_SUBMIT = 'itst_config_carriers_submit';
     const ADD_CARRIER_RULE = 'itst_config_carriers_add';
-    const UPDATE_CARRIER_RULE = 'updateItstTangoIntegracion';
+    // Este lo genera la lista de presta
+    const UPDATE_CARRIER_RULE = 'updateitsttangointegracion';
     const SUBMIT_ADD_CARRIER_RULE = 'itst_config_carriers_add_submit';
     const SUBMIT_UPDATE_CARRIER_RULE = 'itst_config_carriers_update_submit';
-    const SUBMIT_DELETE_CARRIER_RULE = 'deleteItstTangoIntegracion';
+    // Este lo genera la lista de presta
+    const SUBMIT_DELETE_CARRIER_RULE = 'deleteitsttangointegracion';
     const MIN_API_VERSION = '1.3';
 
     protected static $module = false;
@@ -127,7 +129,6 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                 || Tools::isSubmit(self::UPDATE_CARRIER_RULE))
             && (!isset($submit_ok) || !$submit_ok)
         ) {
-            parent::setSelectedTab("carriers-settings");
             $back_url = $context->link->getAdminLink('AdminModules', false)
                 . '&configure=' . self::$module->name
                 . '&tab_module=' . self::$module->tab
@@ -465,6 +466,8 @@ class ItstConfigFormsCarriers extends ItstConfigForms
         $context = Context::getContext();
         $helper->title = self::$module->l('Carriers Rules');
         $helper->table = self::$module->name;
+        $helper->simple_header = true;
+        $helper->module = self::$module;
         $helper->no_link = true;
         $helper->shopLinkType = '';
         $helper->identifier = 'id_carrier_transporte';
@@ -479,8 +482,8 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                 . '&configure=' . self::$module->name
                 . '&tab_module=' . self::$module->tab
                 . '&module_name=' . self::$module->name
-                . '&' . self::ADD_CARRIER_RULE . '=1&token=' . Tools::getAdminTokenLite('AdminModules')
-                . '&selected_tab=' . 'carriers-settings',
+                . '&selected_tab=' . 'carriers-settings'
+                . '&' . self::ADD_CARRIER_RULE . '=1&token=' . Tools::getAdminTokenLite('AdminModules'), 
             'desc' => self::$module->l('Add new rule')
         );
 

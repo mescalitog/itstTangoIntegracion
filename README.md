@@ -50,3 +50,13 @@ Todo
 
 ### Removed
 - none
+
+## [1.3.7] - 2019-06-23
+### Added
+- none
+
+### Changed
+- Fix. [#1098](https://itstuff.com.ar/redmine/issues/1098)
+
+### Removed
+- none
