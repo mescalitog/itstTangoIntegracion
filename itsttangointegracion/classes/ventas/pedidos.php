@@ -73,7 +73,7 @@ class Pedidos
         $logger = Helpers\ItStLogger::instance();
 
         // Rendondeo los precios?
-        $roundPrices = true;
+        $roundPrices = false;
 
         $newOrderStatus = $params['newOrderStatus'];
         $id_order = $params['id_order'];

@@ -135,7 +135,7 @@ $_MODULE['<{itsttangointegracion}prestashop>configformtabs_0a96dae0179bd1f1ec017
 $_MODULE['<{itsttangointegracion}prestashop>form_ef7bd68a02b6b5656554f7a27d1c7bdf'] = 'Error!';
 $_MODULE['<{itsttangointegracion}prestashop>form_dc3fd488f03d423a04da27ce66274c1b'] = 'Atención!';
 $_MODULE['<{itsttangointegracion}prestashop>form_402e7a087747cb56c718bde84651f96a'] = 'Éxito!';
-$_MODULE['<{itsttangointegracion}prestashop>displaybeforecarrier_d251cb88bd554f3bd6917185a694efbd'] = '¿Quieres establecer una fecha de entrega?';
+$_MODULE['<{itsttangointegracion}prestashop>displaybeforecarrier_d251cb88bd554f3bd6917185a694efbd'] = '¿Quiere establecer una fecha de envío preferido?';
 $_MODULE['<{itsttangointegracion}prestashop>displaycheckoutsummarytop_a5d718199fb494ab31cf8996a6722cd1'] = '¿Tiene un número de Orden de Compra?';
 $_MODULE['<{itsttangointegracion}prestashop>displaycheckoutsummarytop_0cd5055917fb9e12fe9fb0a0935e95fd'] = 'Número de Orden de Compra';
 $_MODULE['<{itsttangointegracion}prestashop>displaycheckoutsummarytop_ec211f7c20af43e742bf2570c3cb84f9'] = 'Agregar';
