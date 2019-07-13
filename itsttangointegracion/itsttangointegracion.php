@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 2007-2019  PrestaShop
  *
@@ -36,6 +37,7 @@ require_once dirname(__FILE__) . '/classes/ventas/pedidos.php';
 require_once dirname(__FILE__) . '/classes/ventas/talonarios.php';
 require_once dirname(__FILE__) . '/classes/general/general.php';
 require_once dirname(__FILE__) . '/classes/orderExtended.php';
+require_once dirname(__FILE__) . '/classes/customerExtended.php';
 
 use ItSt\PrestaShop\Tango\Constantes as Consts;
 use ItSt\PrestaShop\Tango\Helpers as Helpers;
@@ -78,9 +80,15 @@ class ItstTangoIntegracion extends Module
         $this->name = 'itsttangointegracion';
         // $this->className = 'ItstTangoIntegracion';
         $this->tab = 'administration';
-        $this->version = '1.3.7';
+        $this->version = '1.4.0';
         $this->author = 'itstuff.com.ar';
         $this->need_instance = 0;
+
+        $this->module_key = '1001he81b4dfed20725b8826e32265c7';
+
+        $this->controllers = array(
+            'adminCustomerExtended' => 'AdminCustomerExtended'
+        );
 
         /**
          * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
@@ -120,27 +128,23 @@ class ItstTangoIntegracion extends Module
 
         include(dirname(__FILE__) . '/sql/install.php');
 
-        return parent::install() &&
-            // Agrego js y css para el front
+        if (
+            parent::install() &&
+            $this->installTab() &&
             $this->registerHook('header') &&
-            // Agrego js y css para el back
             $this->registerHook('backOfficeHeader') &&
-            // Para sincronizar con tango
             $this->registerHook('actionOrderStatusPostUpdate') &&
-            // Para mantener la lista de transportes actualizada
             $this->registerHook('actionCarrierUpdate') &&
-            // Para ingresar el numero de OC (solo queda una)
             $this->registerHook('displayCheckoutSummaryTop') &&
-            // Elegir fecha de entrega
-            $this->registerHook('displayBeforeCarrier');
-        // Registracion y Clientes
-        /*
-            $this->registerHook('additionalCustomerFormFields') &&
-            $this->registerHook('validateCustomerFormFields') &&
-            $this->registerHook('actionAuthentication') &&
-            $this->registerHook('actionCustomerAccountAdd') &&
-            $this->registerHook('actionCustomerAccountUpdate');
-            */
+            $this->registerHook('displayBeforeCarrier') &&
+            $this->registerHook('displayAdminCustomers') &&
+            $this->registerHook('actionCustomerAccountAdd') 
+        ) {
+            return true;
+        } else { // if something wrong return false
+            $this->_errors[] = $this->l('There was an error during the installation. Please contact us at arg_itsupport@itstuff.com.ar.');
+            return false;
+        }
     }
 
     public function uninstall()
@@ -181,24 +185,74 @@ class ItstTangoIntegracion extends Module
 
         include(dirname(__FILE__) . '/sql/uninstall.php');
 
-        return parent::uninstall() &&
-            // Desinstalo los hooks
+        // unregister hook
+        if (
+            parent::uninstall() &&
+            $this->uninstallTab() &&
             $this->unregisterHook('header') &&
             $this->unregisterHook('backOfficeHeader') &&
             $this->unregisterHook('actionOrderStatusPostUpdate') &&
             $this->unregisterHook('actionCarrierUpdate') &&
             $this->unregisterHook('displayCheckoutSummaryTop') &&
-            $this->unregisterHook('displayBeforeCarrier');
+            $this->unregisterHook('displayBeforeCarrier') &&
+            $this->unregisterHook('displayAdminCustomers') &&
+            $this->unregisterHook('actionCustomerAccountAdd') 
+        ) {
+            return true;
+        } else {
+            $this->_errors[] = $this->l('There was an error during the uninstallation. Please contact us at arg_itsupport@itstuff.com.ar.');
+            return false;
+        }
+    }
 
+    /**
+     * This method is often use to create an ajax controller
+     *
+     * @param none
+     * @return bool
+     */
+    public function installTab()
+    {
+        foreach ($this->controllers as $controller_name) {
+            $tab = new Tab();
+            $tab->active = 1;
+            $tab->class_name = $controller_name;
+            $tab->name = array();
+            foreach (Language::getLanguages(true) as $lang) {
+                $tab->name[$lang['id_lang']] = $this->name;
+            }
+            $tab->id_parent = -1;
+            $tab->module = $this->name;
 
-        // Registracion y Clientes
-        /*
-            $this->unregisterHook('additionalCustomerFormFields') &&
-            $this->unregisterHook('validateCustomerFormFields') &&
-            $this->unregisterHook('actionAuthentication') &&
-            $this->unregisterHook('actionCustomerAccountAdd') &&
-            $this->unregisterHook('actionCustomerAccountUpdate');
-            */
+            if (!$tab->add()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * uninstall tab
+     *
+     * @param none
+     * @return bool
+     */
+    public function uninstallTab()
+    {
+        foreach ($this->controllers as $controller_name) {
+            $id_tab = (int) Tab::getIdFromClassName($controller_name);
+            $tab = new Tab($id_tab);
+
+            if (Validate::isLoadedObject($tab)) {
+                if (!$tab->delete()) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function getContent()
@@ -269,7 +323,7 @@ class ItstTangoIntegracion extends Module
         $this->context->controller->registerStylesheet(
             'module-front-css',
             $this->_path . '/views/css/front.css',
-            [ 'media' => 'all', 'priority' => 200, ]
+            ['media' => 'all', 'priority' => 200,]
         );
         $this->context->controller->registerJavascript(
             'module-front-js', // Unique ID
@@ -361,8 +415,8 @@ class ItstTangoIntegracion extends Module
         $new_carrier = $params['carrier'];
 
         $query = 'UPDATE ' . _DB_PREFIX_ . bqSQL('itst_tango_carriers')
-            . ' SET `id_carrier` = ' . (int)$new_carrier->id
-            . ' WHERE `id_carrier` = ' . (int)$params['id_carrier'];
+            . ' SET `id_carrier` = ' . (int) $new_carrier->id
+            . ' WHERE `id_carrier` = ' . (int) $params['id_carrier'];
         $this->logger->addLog(
             'A carrier has been updated',
             Consts\SEVERITY_INFO,
@@ -383,7 +437,7 @@ class ItstTangoIntegracion extends Module
         $orderExtended->save();
         if ($syncOrders) {
             $this->context->smarty->assign(array(
-                'ps_version' => (float)_PS_VERSION_,
+                'ps_version' => (float) _PS_VERSION_,
                 'params' => Tools::jsonEncode($params),
                 'nro_o_comp' => $orderExtended->NRO_O_COMP,
                 'url' => Context::getContext()->link->getModuleLink(
@@ -402,16 +456,14 @@ class ItstTangoIntegracion extends Module
 
     public function hookDisplayBeforeCarrier($params)
     {
-        // FIXME: corregir para produccion
         $syncOrders = Configuration::get(Consts\ITST_TANGO_ORDERS_SYNC, false);
-        $syncOrders = 1;
         $cart_id = $params['cart']->id;
         $orderExtended = new ItSt\PrestaShop\Tango\OrdersExtended($cart_id);
         $orderExtended->id_cart = $cart_id;
         $orderExtended->save();
         if ($syncOrders) {
             $this->context->smarty->assign(array(
-                'ps_version' => (float)_PS_VERSION_,
+                'ps_version' => (float) _PS_VERSION_,
                 'params' => Tools::jsonEncode($params),
                 'fecha_entr' => $orderExtended->FECHA_ENTR,
                 'module'     => 'itsttangointegracion',
@@ -419,7 +471,7 @@ class ItstTangoIntegracion extends Module
                 'controller' => 'ordersextended',
                 'url'        => $this->context->link->getBaseLink(),
                 'id_cart'    => $cart_id,
-                'token'      => Tools::getToken(false),                
+                'token'      => Tools::getToken(false),
             ));
             return $this->display(__FILE__, 'views/templates/hook/displayBeforeCarrier.tpl');
         }
@@ -439,9 +491,56 @@ class ItstTangoIntegracion extends Module
     {
         // FIXME: El usuario se autentico
     }
+    public function hookDisplayAdminCustomers($params)
+    {
+        // controller url
+        $id_customer = $params['id_customer'];
+        $adminCustomerExtended = Context::getContext()->link->getAdminLink($this->controllers['adminCustomerExtended'])
+            . '&id_customer=' . $id_customer
+            . '&action=sync-customer';
+
+        $customerExtended = new ItSt\PrestaShop\Tango\CustomerExtended($id_customer);
+        $this->context->smarty->assign(array(
+            'customerExtended' => $customerExtended,
+            'url' => $adminCustomerExtended,
+        ));
+        return $this->display(__FILE__, 'views/templates/hook/displayAdminCustomers.tpl');
+    }
+
     public function hookActionCustomerAccountAdd($params)
     {
-        // FIXME: Se agregó una cuenta
+        // Se agregó una cuenta de cliente
+        $syncCustomers = Configuration::get(Consts\ITST_TANGO_CUSTOMERS_SYNC, false);
+        $newCustomer = $params["newCustomer"];
+        if ($syncCustomers) {
+            $customerExtended = new ItSt\PrestaShop\Tango\CustomerExtended($newCustomer->id);
+            $customerExtended->syncTangoByContact();
+            $customerExtended->save();
+            $this->logger->addLog(
+                sprintf(
+                    $this->l(
+                        'A new customer with ID %d was created and synchronized with customer %s in Tango'
+                    ),
+                    $newCustomer->id,
+                    $customerExtended->COD_CLIENT
+                ),
+                Consts\SEVERITY_INFO,
+                null,
+                $this->name
+            );
+        } else {
+            $this->logger->addLog(
+                sprintf(
+                    $this->l(
+                        'A new customer with ID %d was created, but customer sync is disabled'
+                    ),
+                    $newCustomer->id
+                ),
+                Consts\SEVERITY_INFO,
+                null,
+                $this->name
+            );
+        }
     }
     public function hookActionCustomerAccountUpdate($params)
     {

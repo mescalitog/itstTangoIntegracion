@@ -62,6 +62,9 @@ namespace ItSt\PrestaShop\Tango\Constantes {
     const ITST_TANGO_SHIPPING_SYNC = 'ITST_TANGO_SHIPPING_SYNC';
     const ITST_TANGO_SHIPPING_PRODUCT = 'ITST_TANGO_CARRIER_PRODUCT';
 
+    //Customers
+    const ITST_TANGO_CUSTOMERS_SYNC = 'ITST_TANGO_CUSTOMERS_SYNC';
+
     // Log Severity Levels
     const SEVERITY_DEBUG = 0;
     const SEVERITY_INFO = 1;

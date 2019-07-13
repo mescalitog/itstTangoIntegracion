@@ -104,6 +104,13 @@ class TangoApi
         $result = RestApiClient::get('/ventas/clientes/' . $COD_CLIENT);
         return $result;
     }
+
+    public function ventasGetClienteDirecciones($COD_CLIENT)
+    {
+        $result = RestApiClient::get('/ventas/clientes/' . $COD_CLIENT . '/direcciones-entrega');
+        return $result;
+    }
+
     public function ventasGetClienteContactos($options)
     {
         $query = "";

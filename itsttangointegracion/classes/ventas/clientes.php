@@ -60,6 +60,11 @@ class Clientes
         return $contactos;
     }
 
+    public static function getDireccionesEntrega($COD_CLIENT) {
+        $direcciones = \TangoApi::instance()->ventasGetClienteDirecciones($COD_CLIENT);
+        return $direcciones;
+    }
+
     public function __destruct()
     {
     }

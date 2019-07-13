@@ -35,6 +35,7 @@ require_once dirname(__FILE__) . '/configFormPrices.php';
 require_once dirname(__FILE__) . '/configFormOrders.php';
 require_once dirname(__FILE__) . '/configFormInventory.php';
 require_once dirname(__FILE__) . '/configFormProducts.php';
+require_once dirname(__FILE__) . '/configFormCustomers.php';
 require_once dirname(__FILE__) . '/../../includes/constants.php';
 
 use Configuration;
@@ -58,6 +59,7 @@ class ItstConfigFormsTabs
         ItstConfigFormsPrices::init($module);
         ItstConfigFormsInventory::init($module);
         ItstConfigFormsProducts::init($module);
+        ItstConfigFormsCustomers::init($module);
 
         return self::$module;
     }
@@ -110,6 +112,13 @@ class ItstConfigFormsTabs
             "id" => "orders-settings",
             'title' => self::$module->l('Orders Settings', 'itsttangointegracion'),
             "content" => ItstConfigFormsOrders::getContent(),
+            "version" => $version
+        );
+
+        $tabs[] = array(
+            "id" => "customers-settings",
+            'title' => self::$module->l('Customers Settings', 'itsttangointegracion'),
+            "content" => ItstConfigFormsCustomers::getContent(),
             "version" => $version
         );
 

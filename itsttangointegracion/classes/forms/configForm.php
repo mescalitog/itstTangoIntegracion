@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 2007-2019  PrestaShop
  *
@@ -60,14 +61,14 @@ abstract class ItstConfigForms
     {
         $context = Context::getContext();
         // Get default language
-        $defaultLang = (int)Configuration::get('PS_LANG_DEFAULT');
+        $defaultLang = (int) Configuration::get('PS_LANG_DEFAULT');
         $helper = new HelperForm();
 
         // Module, token and currentIndex
         $helper->module = self::$module;
         $helper->name_controller = self::$module->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
-        $helper->currentIndex = AdminController::$currentIndex . '&configure=' . self::$module->name;
+        // $helper->currentIndex = AdminController::$currentIndex . '&configure=' . self::$module->name;
         $helper->submit_action = $action;
         $helper->identifier = self::$module->name;
 
@@ -98,9 +99,10 @@ abstract class ItstConfigForms
 
         $helper->currentIndex = $context->link->getAdminLink('AdminModules', false)
             . '&configure=' . self::$module->name
-            . '&tab_module=' . self::$module->tab
+            . '&tab_module=' . self::$selectedTab
             . '&module_name=' . self::$module->name;
 
+ 
         $helper->tpl_vars = array(
             'fields_value' => $form_values,
             'languages' => $context->controller->getLanguages(),

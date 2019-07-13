@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 2007-2019  PrestaShop
  *
@@ -86,6 +87,45 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_orders_extended` (
     KEY `date_add` (`date_add`)
     );
   ';
+// 1.3.8 estados
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_tango_ps_status` (
+  `id_tango_ps_status` INT NOT NULL AUTO_INCREMENT,
+  `id_tango_status` INT(10) UNSIGNED NULL,
+  `id_order_state` INT(10) UNSIGNED NULL,
+  PRIMARY KEY (`id_tango_ps_status`),
+  INDEX `idx_tango_status` (`id_tango_status` ASC),
+  CONSTRAINT `fk_itstTango_order_state`
+    FOREIGN KEY (`id_order_state`)
+    REFERENCES `' . _DB_PREFIX_ . 'order_state` (`id_order_state`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+';
+// 1.3.8 clientes
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_customer_extended` (
+    `id_customer` INT(10) UNSIGNED NOT NULL,
+    `COD_CLIENT` VARCHAR(6) NULL,
+    `COD_VENDED` VARCHAR(10) NULL,
+    `COND_VTA` INT(10) UNSIGNED NULL,
+    `CUIT` VARCHAR(20) NULL,
+    `CUPO_CREDI` DECIMAL(22,7) NULL,
+    `NOM_COM` VARCHAR(20) NULL,
+    `RAZON_SOCI` VARCHAR(60) NULL,
+    `NRO_LISTA` INT(10) UNSIGNED NULL,
+    `id_shop_group` int(11) unsigned NOT NULL DEFAULT 1,
+    `id_shop` int(11) unsigned NOT NULL DEFAULT 1,
+    `secure_key` varchar(32) NOT NULL DEFAULT -1,
+    `date_add` datetime NOT NULL,
+    `date_upd` datetime NOT NULL,
+
+  PRIMARY KEY (`id_customer`),
+  INDEX `idx_itst_customer_extended_COD_CLIENT` (`COD_CLIENT` ASC),
+  INDEX `idx_itst_customer_extended_CUIT` (`CUIT` ASC),
+  CONSTRAINT `fk_itst_customer_extended_customer`
+    FOREIGN KEY (`id_customer`)
+    REFERENCES `' . _DB_PREFIX_ . 'customer` (`id_customer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+';
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {

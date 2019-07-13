@@ -93,23 +93,12 @@ class Pedidos
         $cart = $params['cart'];
         // Extended order data
         $orderExtended = new \ItSt\PrestaShop\Tango\OrdersExtended($cart->id);
+
+        // Datos del Cliente
         $customer = new \Customer($cart->id_customer);
-        $contactos = Clientes::getContactos(array('email' => $customer->email));
-        $contacto = (empty($contactos['rows'])) ? null : $contactos['rows'][0];
-        $condVenta = 1;
-        $condVended = null;
-        $nroLista = null;
-        //Cuando no encuentro el cliente lo mando como ocacional, definido en las constantes.
-        $codCliente = Consts\ITST_TANGO_ORDERS_CLIENTE_OCACIONAL;
-        if (isset($contacto)) {
-            $cliente = Clientes::getCliente($contacto['COD_CLIENT']);
-            $codCliente = (isset($cliente) && isset($cliente['COD_CLIENT'])
-                ? $cliente['COD_CLIENT']
-                : Consts\ITST_TANGO_ORDERS_CLIENTE_OCACIONAL);
-            $condVenta = (isset($cliente) && isset($cliente['COND_VTA'])) ? $cliente['COND_VTA'] : 1;
-            $condVended = (isset($cliente) && isset($cliente['COD_VENDED'])) ? $cliente['COD_VENDED'] : null;
-            $nroLista = (!isset($cliente) && isset($cliente['NRO_LISTA'])) ? $cliente['NRO_LISTA'] : null;
-        };
+        $customerExtended = new ItSt\PrestaShop\Tango\CustomerExtended($this->variables['id_customer']);
+        $customerExtended->syncTangoByContact();
+        $customerExtended->save();
 
         //Transporte
         $transporte = Carriers\ItstTangoCarriers::getCarrierRuleByCarrier(
@@ -160,9 +149,6 @@ class Pedidos
                 'COD_CLASIF' => ''
             );
         }
-        // FIXME: CUIT y COD_CLIENT reemplazando SIRET y APE
-        // http://www.doblelink.com/blog/cambiar-los-campos-siret-y-ape-en-prestashop/
-        // FIXME: es pedido web, tienda, web_order_id
         $fecha_entr = new DateTime();
         $fecha_entr->add(new DateInterval('P7D'));
         // $porc_desc = ($order->total_discounts * 100 /  $order->total_products_wt);
@@ -173,14 +159,14 @@ class Pedidos
             'NRO_OC_COMP' => $orderExtended->NRO_O_COMP,
             'FECHA_O_COMP' => (new DateTime($order->date_add))->format('c'),
             'FECHA_ENTR' => (isset($orderExtended->FECHA_ENTR) && ($orderExtended->FECHA_ENTR <> '0000-00-00')) ? $orderExtended->FECHA_ENTR : $fecha_entr->format('c'),
-            'COND_VTA' => $condVenta,
-            'COD_VENDED' => $condVended,
+            'COND_VTA' => $customerExtended->COND_VTA,
+            'COD_VENDED' => $customerExtended->COD_VENDED,
             'COMP_STK' => $comp_stk,
             'COD_SUCURS' => '',
             'COTIZ' => '',
             'FECHA_PEDI' => (new DateTime($order->date_add))->format('c'),
-            'N_LISTA' => $nroLista,
-            'COD_CLIENT' => $codCliente,
+            'N_LISTA' => $customerExtended->N_LISTA,
+            'COD_CLIENT' => $customerExtended->COD_CLIENT,
             'LEYENDA_1' => $newOrderStatus->name,
             'LEYENDA_2' => (isset($orderExtended->NRO_O_COMP) && !empty($orderExtended->NRO_O_COMP))
                 ? 'El cliente ingreso OC:' . $orderExtended->NRO_O_COMP

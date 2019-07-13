@@ -60,3 +60,14 @@ Todo
 
 ### Removed
 - none
+
+## [1.4.1] - 2019-07-12
+### Added
+- Sincronizacion de estados
+- Sincronizacion de Datos de Clientes
+
+### Changed
+- none
+
+### Removed
+- none
