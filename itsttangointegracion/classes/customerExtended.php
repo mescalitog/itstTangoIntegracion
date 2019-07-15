@@ -150,6 +150,10 @@ class CustomerExtended extends ObjectModel
                     $address->city = $direccion['LOCALIDAD'];
                     $address->other = $direccion['ID_DIRECCION_ENTREGA'];
                     $address->alias = $direccion['COD_DIRECCION_ENTREGA'];
+                    
+                    $address->company = $customer->company;
+                    $address->vat = $customer->siret;
+
                     $address->firstname = $customer->firstname;
                     $address->lastname = $customer->lastname;
                     $address->id_customer = (int) $customer->id;
