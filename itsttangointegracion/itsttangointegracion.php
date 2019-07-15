@@ -86,10 +86,6 @@ class ItstTangoIntegracion extends Module
 
         $this->module_key = '1001he81b4dfed20725b8826e32265c7';
 
-        $this->controllers = array(
-            'adminCustomerExtended' => 'AdminCustomerExtended'
-        );
-
         /**
          * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
          */
@@ -101,7 +97,7 @@ class ItstTangoIntegracion extends Module
         $this->displayName = $this->l('ItStuff Integración con Axoft Tango');
         $this->description = $this->l('Modulo de integración para Axoft Tango');
 
-        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = array('min' => '1.7.5', 'max' => _PS_VERSION_);
 
         // ItStuff Begins
         $this->logger = Helpers\ItStLogger::instance();
@@ -130,7 +126,6 @@ class ItstTangoIntegracion extends Module
 
         if (
             parent::install() &&
-            $this->installTab() &&
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader') &&
             $this->registerHook('actionOrderStatusPostUpdate') &&
@@ -188,7 +183,6 @@ class ItstTangoIntegracion extends Module
         // unregister hook
         if (
             parent::uninstall() &&
-            $this->uninstallTab() &&
             $this->unregisterHook('header') &&
             $this->unregisterHook('backOfficeHeader') &&
             $this->unregisterHook('actionOrderStatusPostUpdate') &&
@@ -203,56 +197,6 @@ class ItstTangoIntegracion extends Module
             $this->_errors[] = $this->l('There was an error during the uninstallation. Please contact us at arg_itsupport@itstuff.com.ar.');
             return false;
         }
-    }
-
-    /**
-     * This method is often use to create an ajax controller
-     *
-     * @param none
-     * @return bool
-     */
-    public function installTab()
-    {
-        foreach ($this->controllers as $controller_name) {
-            $tab = new Tab();
-            $tab->active = 1;
-            $tab->class_name = $controller_name;
-            $tab->name = array();
-            foreach (Language::getLanguages(true) as $lang) {
-                $tab->name[$lang['id_lang']] = $this->name;
-            }
-            $tab->id_parent = -1;
-            $tab->module = $this->name;
-
-            if (!$tab->add()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * uninstall tab
-     *
-     * @param none
-     * @return bool
-     */
-    public function uninstallTab()
-    {
-        foreach ($this->controllers as $controller_name) {
-            $id_tab = (int) Tab::getIdFromClassName($controller_name);
-            $tab = new Tab($id_tab);
-
-            if (Validate::isLoadedObject($tab)) {
-                if (!$tab->delete()) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
     }
 
     public function getContent()
@@ -428,9 +372,7 @@ class ItstTangoIntegracion extends Module
 
     public function hookDisplayCheckoutSummaryTop($params)
     {
-        // FIXME: corregir para produccion
         $syncOrders = Configuration::get(Consts\ITST_TANGO_ORDERS_SYNC, false);
-        $syncOrders = 1;
         $cart_id = $params['cart']->id;
         $orderExtended = new ItSt\PrestaShop\Tango\OrdersExtended($cart_id);
         $orderExtended->id_cart = $cart_id;
@@ -495,7 +437,7 @@ class ItstTangoIntegracion extends Module
     {
         // controller url
         $id_customer = $params['id_customer'];
-        $adminCustomerExtended = Context::getContext()->link->getAdminLink($this->controllers['adminCustomerExtended'])
+        $adminCustomerExtended = Context::getContext()->link->getAdminLink('AdminCustomerExtendedController')
             . '&id_customer=' . $id_customer
             . '&action=sync-customer';
 

@@ -1,6 +1,7 @@
 # dependencies
 /node_modules
 /pack
+/itsttangointegracion/vendor
 # ignore IDE/hidden/OS cache files
 *.json
 !package.json

@@ -1,0 +1,7 @@
+itst_admin_customer_extended:
+    path: itsttangointegracion/AdminCustomerExtended
+    methods: [GET]
+    defaults:
+      _controller: 'ItSt\PrestaShop\Tango\Controller\AdminCustomerExtendedController::postProcess'
+      _legacy_controller: 'AdminCustomerExtendedController'
+      _legacy_link: 'AdminCustomerExtendedController'

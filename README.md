@@ -61,13 +61,13 @@ Todo
 ### Removed
 - none
 
-## [1.4.1] - 2019-07-12
+## [1.4.2] - 2019-07-12
 ### Added
 - Sincronizacion de estados
 - Sincronizacion de Datos de Clientes
 
 ### Changed
-- none
+- Requiere minimo prestashop 1.7.5
 
 ### Removed
 - none
