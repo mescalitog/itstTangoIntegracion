@@ -23,7 +23,7 @@ Después de instalar el modulo, es necesario configurarlo.
 
 La configuración general incluye parametros generales para el uso del moodulo y debe configurarse antes de poder configurar el resto de las opciones.
 
-![](documents/assets/images/config_1.jpg)
+![](raw/documents/assets/images/config_1.png)
 
 * **Modo Producción** - Determina si el modulo esta activado
 * **WS Url** - Corresponde a la url donde el modulo va a encontrar la api
@@ -34,9 +34,9 @@ La configuración general incluye parametros generales para el uso del moodulo y
 
 ### Configuración de Transportes
 
-Si se habilita la sincronizaciónd de transportes, cuando se sincronice un [pedido](#configuración-de-pedidos) los costos de envío se agregaran al pedido como un producto.
+Si se habilita la sincronizaciónd de transportes, cuando se sincronice un [pedido](#orders-settings) los costos de envío se agregaran al pedido como un producto.
 
-![](documents/assets/images/config_2.jpg)
+![](raw/documents/assets/images/config_2.png)
 
 * **Sincronizar costos de envio** - Cuando esta habilitado agregarán al pedido los costos de envío como un producto.
 * **Producto para costo de envío** - Este es el código del producto que se usará para sincronizar los costos de envío. El producto debe existir en Tango al momento de la configuración.
@@ -50,7 +50,7 @@ Las reglas de transporte relacionan un transporte en [Prestashop](https://www.pr
 Si esta habilitado, el modulo puede sincronizar periodicamente los precios de Tango mediante el uso de [cron jobs](#cron-jobs). 
 > Para identificar los productos se debe incluir el **Código de Articulo** de Tango en el campo **Referencia** del producto o combinación en [Prestashop](https://www.prestashop.com)
 
-![](documents/assets/images/config_3.jpg)
+![](raw/documents/assets/images/config_3.png)
 
 * **¿Cómo Sincronizar Precios?** - Cuando la sinrconización esta habilitada, muestra el link al job que sincroniza los precios.
 * **Sincronizar Precios** - Habilita la sincronización de precios
@@ -66,11 +66,40 @@ Si la lista es en _moneda extrangera_ el modulo consultará la ultima cotizacion
 
 > [Ver como configurar cron-jobs](#cron-jobs). 
 
-### Configuración de Pedidos
+### <a name="products-settings"></a>Configuración de Productos
 
-## Logs
+Si esta habilitado, el modulo puede sincronizar periodicamente los productos de Tango habilitados para ventas mediante el uso de [cron jobs](#cron-jobs). 
+> El codigo del producto sincronizado se incluye en el cambio *Referencia* 
+> Si el **Código de Articulo** del producto sincronizado no tiene un producto con el mismo codigo en el campo **Referencia** del producto o combinación en [Prestashop](https://www.prestashop.com) el producto se crea en la categoria _NUEVOS IMPORTADOS TANGO_
 
-## Cron Jobs
+
+* **¿Cómo Sincronizar Productos?** - Cuando la sinrconización esta habilitada, muestra el link al job que sincroniza los productos.
+* **Sincronizar Productos** - Habilita la sincronización de productos
+
+> [Ver como configurar cron-jobs](#cron-jobs). 
+
+### <a name="orders-settings"></a>Configuración de Pedidos
+
+El módulo sincronizará con tango todas las ordenes que esten en un estado para el que este habilitado "Consider the associated order as validated."
+
+* **Sincronizar pedidos** - Habilita la sincronizacion de pedidos. Si la sincronizacion no esta habilitada y un pedido alcanza un estado válido, se generará un log. [Ver Logs](#logs)
+* **Incluir impuestos en los productos** - Determina si los productos se sincronizarán con o sin impuestos. 
+* **Talonario de pedidos** - Seleccionar desde la lista desplegable el talonario de tango que se utilizará para generar los pedidos.
+
+### Configuración de Clientes
+
+Cuando esta habilitado, se sincronizan las cuentas de usuario de prestashop con contactos de clientes en tango.
+Tambien se crean las direcciones que existan en tango.
+
+La sincronización tambien puede hacerse manualmente, desde el modulo de administración de clientes en Prestashop.
+
+![](raw/documents/assets/images/config_4.png)
+
+
+## <a name="logs"></a>Logs
+
+
+## <a name="cron-jobs"></a>Cron Jobs
 
 
 # Changelog

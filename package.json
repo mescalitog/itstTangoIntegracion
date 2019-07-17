@@ -8,7 +8,8 @@
     "fs": "0.0.1-security"
   },
   "scripts": {
-    "build": "pushd itsttangointegracion && @composer dumpautoload && popd && node dev-pack.js"
+    "dev-build": "pushd itsttangointegracion && @composer dumpautoload && popd && node dev-pack.js",
+    "build": "node dev-pack.js"
   },
   "author": "José Marfil <jose.marfil@itstuff.com.ar>",
   "license": "ISC"

@@ -452,6 +452,7 @@ class ItstTangoIntegracion extends Module
         if ($syncCustomers) {
             $customerExtended = new ItSt\PrestaShop\Tango\CustomerExtended($newCustomer->id);
             $customerExtended->syncTangoByContact();
+            $customerExtended->syncTangAddresses();
             $customerExtended->save();
             $this->logger->addLog(
                 sprintf(

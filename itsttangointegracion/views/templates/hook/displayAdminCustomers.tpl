@@ -25,78 +25,69 @@
 
 {block name="display_extended_customer"}
 
-<div class="col-lg-12">
-    <div class="panel">
-        <div class="panel-heading">
-            <i class="icon-user"></i>
-            El cliente #{$customerExtended->id_customer} es contacto de este cliente en TANGO
-            <div class="panel-heading-action">
-                <a class="btn btn-default" href="{$url|escape:'html':'UTF-8'}&amp;back={$smarty.server.REQUEST_URI|urlencode}">
-                    <i class="icon-refresh" aria-hidden="true"></i>
-                    {l s='Sync', mod='Modules.itsttangointegracion'}
+<div class="col">
+
+    <div class="card">
+        <h3 class="card-header">
+            <i class="material-icons">person</i>
+                {l s='The customer [%06d] is a contact of the following Tango customer' sprintf=[{$customerExtended->id_customer}] mod='itsttangointegracion'}            
+                <a href="{$url|escape:'html':'UTF-8'}&amp;back={$smarty.server.REQUEST_URI|urlencode}"  
+                    class="tooltip-link float-right" data-toggle="pstooltip" title="" data-placement="top" data-original-title="{l s='Sync' mod='itsttangointegracion'}"
+                >
+                    <i class="material-icons"> sync </i>
                 </a>
+
+        </h3>
+
+        <div class="card-body">
+            <div class="row">
+                {if isset($customerExtended->COD_CLIENT) && $customerExtended->COD_CLIENT != ""}
+                    <div class="col-lg-6">
+                        <div class="row mb-1">
+                            <div class="col-4 text-right"> {l s='Customer Code' mod='itsttangointegracion'} </div>
+                            <div class="col-8"> {$customerExtended->COD_CLIENT} </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-4 text-right"> {l s='Vat Number' mod='itsttangointegracion'} </div>
+                            <div class="col-8"> {$customerExtended->COD_CLIENT} </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-4 text-right"> {l s='Business Name' mod='itsttangointegracion'} </div>
+                            <div class="col-8"> {$customerExtended->CUIT} </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="col-4 text-right"> {l s='Created at' mod='itsttangointegracion'} </div>
+                            <div class="col-8"> {$customerExtended->date_add} </div>
+                        </div>         
+                        <div class="row mb-1">
+                            <div class="col-4 text-right"> {l s='Updated at' mod='itsttangointegracion'} </div>
+                            <div class="col-8">{$customerExtended->date_upd} </div>
+                        </div>                                           
+                    </div>   
+                    <div class="col-lg-6">
+                        <div class="row mb-1">
+                            <div class="col-4 text-right"> {l s='Price List' mod='itsttangointegracion'} </div>
+                            <div class="col-8"> {$customerExtended->NRO_LISTA} </div>
+                        </div>
+                    </div>   
+                {else}
+                    <div class="col-lg-12">
+                        <div class="text-center text-warning">
+                            <div class="m-b-none">
+                            <i class="icon-warning"></i>
+                            <h5 class="font-bold no-margins">
+                                {l s='could not synchronize this customer' mod='itsttangointegracion'}                            
+                            </h5>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
             </div>
         </div>
-        <div class="row">
-            {if isset($customerExtended->COD_CLIENT) && $customerExtended->COD_CLIENT != ""}
-                <div class="col-lg-6">
-                    <div class="form-horizontal">
-                        <div class="row">
-                            <label class="control-label col-lg-3">{l s='Customer Code', mod='Modules.itsttangointegracion'}</label>
-                            <div class="col-lg-9">
-                                <p class="form-control-static">{$customerExtended->COD_CLIENT}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="control-label col-lg-3">{l s='Vat Number', mod='Modules.itsttangointegracion'}</label>
-                            <div class="col-lg-9">
-                                <p class="form-control-static">{$customerExtended->CUIT}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="control-label col-lg-3">{l s='Business Name', mod='Modules.itsttangointegracion'}</label>
-                            <div class="col-lg-9">
-                                <p class="form-control-static">{$customerExtended->RAZON_SOCI}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="control-label col-lg-3">{l s='Created at', mod='Modules.itsttangointegracion'}</label>
-                            <div class="col-lg-9">
-                                <p class="form-control-static">{$customerExtended->date_add}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="control-label col-lg-3">{l s='Updated at', mod='Modules.itsttangointegracion'}</label>
-                            <div class="col-lg-9">
-                                <p class="form-control-static">{$customerExtended->date_upd}</p>
-                            </div>
-                        </div>                                                                                
-                        
-                    </div>
-                </div>   
-                <div class="col-lg-6">
-                    <div class="form-horizontal">
-                        <div class="row">
-                            <label class="control-label col-lg-3">{l s='Price List', mod='Modules.itsttangointegracion'}</label>
-                            <div class="col-lg-9">
-                                <p class="form-control-static">{$customerExtended->NRO_LISTA}</p>
-                            </div>
-                        </div>                        
-                    </div>                
-                </div>
-            {else}
-                <div class="col-lg-12">
-                    <div class="text-center text-warning">
-                        <div class="m-b-none">
-                        <i class="icon-warning"></i>
-                        <h5 class="font-bold no-margins">
-                            Este cliente no pudo ser sincronizado
-                        </h5>
-                        </div>
-                    </div>
-                </div>
-            {/if}
-        </div>
+
     </div>
 </div>    
 {/block}
