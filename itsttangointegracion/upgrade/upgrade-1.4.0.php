@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 2007-2019  PrestaShop
  *
@@ -76,15 +75,13 @@ function upgrade_module_1_4_0($module, $install = false)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION);
         ';
-        
+
 
         foreach ($sql as $query) {
             Db::getInstance()->execute($query);
         }
     }
 
-    return (
-        $module->registerHook('actionCustomerAccountAdd') && 
-        $module->registerHook('displayAdminCustomers')
-    );
+    return ($module->registerHook('actionCustomerAccountAdd') &&
+        $module->registerHook('displayAdminCustomers'));
 }

@@ -1,27 +1,27 @@
 <?php
-/**
- * 2007-2019  PrestaShop
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to http://www.prestashop.com for more information.
- *
- * @author    itstuff.com.ar
- * @copyright Copyright (c) ItStuff [https://itstuff.com.ar]
- * @license   https://itstuff.com.ar/licenses/commercial-1.0.html Commercial License
- */
+/*
+* 2007-2015 PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+* @author    itstuff.com.ar
+* @copyright Copyright (c) ItStuff [https://itstuff.com.ar]
+* @license   https://itstuff.com.ar/licenses/commercial-1.0.html Commercial License
+*/
 
 namespace ItSt\PrestaShop\Tango\Forms;
 
@@ -37,7 +37,7 @@ use ItSt\PrestaShop\Tango\General as General;
 use Configuration;
 use Tools;
 
-class ItstConfigFormsGeneral extends ItstConfigForms
+class ConfigFormGeneral extends ItstConfigForms
 {
     const CONFIG_GENERAL_SUBMIT = 'submitTangoIntegracionConfigGeneral';
 
@@ -59,7 +59,7 @@ class ItstConfigFormsGeneral extends ItstConfigForms
     {
         $output = null;
 
-        if ((bool)Tools::isSubmit(self::CONFIG_GENERAL_SUBMIT)) {
+        if ((bool) Tools::isSubmit(self::CONFIG_GENERAL_SUBMIT)) {
             parent::setSelectedTab("general-settings");
             self::postProcess();
         }
@@ -76,7 +76,7 @@ class ItstConfigFormsGeneral extends ItstConfigForms
     {
         $form_values = self::getFormValues();
         self::$module->logger->addLog(
-            self::$module->l('General settings updated.'),
+            self::$module->l('General settings updated.', 'ConfigFormGeneral'),
             Consts\SEVERITY_INFO,
             null,
             self::$module->name
@@ -90,10 +90,7 @@ class ItstConfigFormsGeneral extends ItstConfigForms
             Configuration::updateValue(Consts\ITST_TANGO_VERSION, $status['version']);
             Configuration::updateValue(Consts\ITST_TANGO_ENVIRONMENT, $status['environment']);
             return self::$module->setConfirmationMessage(
-                self::$module->l(
-                    'Successfully connected to the api. Current version is ',
-                    self::$module->name
-                )
+                self::$module->l('Successfully connected to the api. Current version is ', 'ConfigFormGeneral')
                     . $status['version'] . ' running on ' . $status['environment'] . ' environment'
             );
         } else {
@@ -107,7 +104,7 @@ class ItstConfigFormsGeneral extends ItstConfigForms
             self::$module->setErrorMessage(
                 self::$module->l(
                     'An error occurred trying to access the API. Please check configuration parameters.',
-                    self::$module->name
+                    'ConfigFormGeneral'
                 )
             );
         }
@@ -127,13 +124,21 @@ class ItstConfigFormsGeneral extends ItstConfigForms
                 'input' => array(
                     array(
                         'type' => 'switch',
-                        'label' => self::$module->l('Live mode'),
+                        'label' => self::$module->l('Live mode', 'ConfigFormGeneral'),
                         'name' => Consts\ITST_TANGO_LIVE_MODE,
                         'is_bool' => true,
-                        'desc' => self::$module->l('Use this module in live mode'),
+                        'desc' => self::$module->l('Use this module in live mode', 'ConfigFormGeneral'),
                         'values' => array(
-                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
-                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => self::$module->l('Enabled', 'ConfigFormGeneral')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => self::$module->l('Disabled', 'ConfigFormGeneral')
+                            )
                         ),
                     ),
                     array('type' => 'free', 'name' => 'status_check', 'col' => 9, 'offset' => 0),
@@ -141,27 +146,28 @@ class ItstConfigFormsGeneral extends ItstConfigForms
                         'col' => 6,
                         'type' => 'text',
                         'name' => Consts\ITST_TANGO_API_URL,
-                        'label' => self::$module->l('WS Url', 'itsttangointegracion'),
-                        'placeholder' => self::$module->l('Enter API url', 'itsttangointegracion'),
+                        'label' => self::$module->l('WS Url', 'ConfigFormGeneral'),
+                        'placeholder' => self::$module->l('Enter API url', 'ConfigFormGeneral'),
                         'required' => true,
                     ),
                     array(
                         'col' => 6,
                         'type' => 'text',
                         'name' => Consts\ITST_TANGO_API_KEY,
-                        'label' => self::$module->l('API-KEY', 'itsttangointegracion'),
+                        'label' => self::$module->l('API-KEY', 'ConfigFormGeneral'),
                         'placeholder' => self::$module->l(
                             'Enter API key provided by itstuff.com.ar',
-                            'itsttangointegracion'
+                            'ConfigFormGeneral'
                         ),
                         'required' => true,
                     ),
                     'input' => array(
                         'type' => 'select',
-                        'label' => self::$module->l('Stop after errors', 'itsttangointegracion'),
+                        'label' => self::$module->l('Stop after errors', 'ConfigFormGeneral'),
                         'name' => Consts\ITST_TANGO_MAX_ERRORS,
                         'desc' => self::$module->l(
-                            'Automatic Process will stop after reach the configured amount of errors'
+                            'Automatic Process will stop after reach the configured amount of errors',
+                            'ConfigFormGeneral'
                         ),
                         'required' => true,
                         'options' => array(
@@ -177,9 +183,9 @@ class ItstConfigFormsGeneral extends ItstConfigForms
                     ),
                     array(
                         'type' => 'select',
-                        'label' => self::$module->l('Log serverity'),
+                        'label' => self::$module->l('Log serverity', 'ConfigFormGeneral'),
                         'name' => Consts\ITST_TANGO_LOG_SEVERITY,
-                        'desc' => self::$module->l('Determine the severity of the generated logs'),
+                        'desc' => self::$module->l('Determine the severity of the generated logs', 'ConfigFormGeneral'),
                         'options' => array(
                             'query' => array(
                                 array('id' => Consts\SEVERITY_DEBUG, 'name' => 'DEBUG'),
@@ -192,18 +198,26 @@ class ItstConfigFormsGeneral extends ItstConfigForms
                     ),
                     array(
                         'type' => 'switch',
-                        'label' => self::$module->l('Logs to file'),
+                        'label' => self::$module->l('Logs to file', 'ConfigFormGeneral'),
                         'name' => Consts\ITST_TANGO_LOG_TOFILE,
                         'is_bool' => true,
-                        'desc' => self::$module->l('Should this module generate a log file?'),
+                        'desc' => self::$module->l('Should this module generate a log file?', 'ConfigFormGeneral'),
                         'values' => array(
-                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
-                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => self::$module->l('Enabled', 'ConfigFormGeneral')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => self::$module->l('Disabled', 'ConfigFormGeneral')
+                            )
                         )
                     )
                 ),
                 'submit' => array(
-                    'title' => self::$module->l('Save', 'itsttangointegracion'),
+                    'title' => self::$module->l('Save', 'ConfigFormGeneral'),
                     'type' => 'submit',
                     'class' => 'btn btn-default pull-right'
                 )
@@ -226,20 +240,23 @@ class ItstConfigFormsGeneral extends ItstConfigForms
         $envirnoment = Configuration::get(Consts\ITST_TANGO_ENVIRONMENT, null);
         $statusOk = '<div class="alert alert-success">'
             . '<p>'
-            . self::$module->l(
-                'Last status check returns version:' . $version
-                    . ' environment:' . $envirnoment,
-                'itsttangointegracion'
-            ) . ' '
+            . sprintf(
+                self::$module->l(
+                    'Last status check returns version: %s  environment: %s',
+                    'ConfigFormGeneral'
+                ),
+                $version,
+                $envirnoment
+            )
+            . ' '
             . '</p>'
             . '</div>';
         $statusFail = '<div class="alert alert-warning">'
             . '<p>'
-            . self::$module->l('There is no API status information', 'itsttangointegracion') . ' '
-            . '<br />' . self::$module->l(
-                'Submit this form to perform an API status check',
-                'itsttangointegracion'
-            ) . ' '
+            . self::$module->l('There is no API status information', 'ConfigFormGeneral') . ' '
+            . '<br />'
+            . self::$module->l('Submit this form to perform an API status check', 'ConfigFormGeneral')
+            . ' '
             . '</p>'
             . '</div>';
         $statusCheck = (($version == null) ? $statusFail : $statusOk);
@@ -257,11 +274,11 @@ class ItstConfigFormsGeneral extends ItstConfigForms
             '<div class="alert alert-info">'
                 . self::$module->l(
                     'Check the api calling status method and return the results.',
-                    'itsttangointegracion'
+                    'ConfigFormGeneral'
                 ) . ' '
                 . self::$module->l(
                     'Version.',
-                    'itsttangointegracion'
+                    'ConfigFormGeneral'
                 ) . ' '
                 . '</div>',
             'status_check' => $statusCheck,

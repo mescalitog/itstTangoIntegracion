@@ -1,27 +1,27 @@
 <?php
-/**
- * 2007-2019  PrestaShop
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to http://www.prestashop.com for more information.
- *
- * @author    itstuff.com.ar
- * @copyright Copyright (c) ItStuff [https://itstuff.com.ar]
- * @license   https://itstuff.com.ar/licenses/commercial-1.0.html Commercial License
- */
+/*
+* 2007-2015 PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+* @author    itstuff.com.ar
+* @copyright Copyright (c) ItStuff [https://itstuff.com.ar]
+* @license   https://itstuff.com.ar/licenses/commercial-1.0.html Commercial License
+*/
 
 namespace ItSt\PrestaShop\Tango\Forms;
 
@@ -46,7 +46,7 @@ use Db;
 use Context;
 use Carrier;
 
-class ItstConfigFormsCarriers extends ItstConfigForms
+class ConfigFormCarriers extends ItstConfigForms
 {
     const SETTINGS_CARRIERS_SUBMIT = 'itst_config_carriers_submit';
     const ADD_CARRIER_RULE = 'itst_config_carriers_add';
@@ -83,23 +83,21 @@ class ItstConfigFormsCarriers extends ItstConfigForms
         if (!isset($api_version) || ($api_version == null)) {
             return $output .= '<div class="alert alert-warning">'
                 . '<p>'
-                . self::$module->l('There is no API status information', 'itsttangointegracion') . ' '
-                . '<br />' . self::$module->l(
-                    'Configure the API in General Settings and get a valid response to enable this tab',
-                    'itsttangointegracion'
-                ) . ' '
+                . self::$module->l('There is no API status information', 'ConfigFormCarriers') . ' '
+                . '<br />'
+                . self::$module->l('Configure the API in General Settings and get a valid response to enable this tab',  'ConfigFormCarriers')
+                . ' '
                 . '</p>'
                 . '</div>';
         } elseif (version_compare($api_version, self::MIN_API_VERSION) < 0) {
             return $output .= '<div class="alert alert-warning">'
                 . '<p>'
-                . self::$module->l('Api version does not meet minimum requirements', 'itsttangointegracion') . ' '
+                . self::$module->l('Api version does not meet minimum requirements', 'ConfigFormCarriers') . ' '
                 . '<br />' .
                 sprintf(
                     self::$module->l(
-                        'This module requires at least API version %1$s and current version is %2$s',
-                        'itsttangointegracion'
-                    ),
+                        'This module requires at least API version %1$s and current version is %2$s', 
+                        'ConfigFormCarriers'),
                     self::MIN_API_VERSION,
                     $api_version
                 )
@@ -184,7 +182,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                     sprintf(
                         self::$module->l(
                             'The product %1$s - %2$s will be used to synchronize shipping costs',
-                            'itsttangointegracion'
+                            'ConfigFormCarriers'
                         ),
                         $product['COD_ARTICU'],
                         $product['DESCRIPCIO']
@@ -198,7 +196,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                     sprintf(
                         self::$module->l(
                             '%1$s is not a valid Tango product or the API could not be reached',
-                            'itsttangointegracion'
+                            'ConfigFormCarriers'
                         ),
                         $cod_articu
                     ),
@@ -207,7 +205,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
             }
         }
         return self::$module->setConfirmationMessage(
-            self::$module->l('Settings updated.', self::$module->name)
+            self::$module->l('Settings updated.', 'ConfigFormCarriers')
         );
     }
 
@@ -219,37 +217,49 @@ class ItstConfigFormsCarriers extends ItstConfigForms
         $form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => self::$module->l('Carriers Settings', 'itsttangointegracion'),
+                    'title' => self::$module->l('Carriers Settings', 'ConfigFormCarriers'),
                     'icon' => 'icon-cogs',
                 ),
                 'description' => self::$module->l(
                     'The shipping cost will be synchronized with tango using the product configured below',
-                    'itsttangointegracion'
+                    'ConfigFormCarriers'
                 ),
                 'input' => array(
                     array(
                         'type' => 'switch',
-                        'label' => self::$module->l('Synchronize Shipping Costs', 'itsttangointegracion'),
+                        'label' => self::$module->l('Synchronize Shipping Costs', 'ConfigFormCarriers'),
                         'name' => Consts\ITST_TANGO_SHIPPING_SYNC,
                         'is_bool' => true,
-                        'desc' => self::$module->l('Should this module synchronize shipping costs?'),
+                        'desc' => self::$module->l(
+                            'Should this module synchronize shipping costs?',
+                            'ConfigFormCarriers'
+                        ),
                         'values' => array(
-                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
-                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => self::$module->l('Enabled', 'ConfigFormCarriers')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => self::$module->l('Disabled', 'ConfigFormCarriers')
+                            )
                         ),
                     ),
                     array(
                         'type' => 'text',
                         'name' => Consts\ITST_TANGO_SHIPPING_PRODUCT,
-                        'label' => self::$module->l('Shipping cost product'),
+                        'class' => 'input fixed-width-md',
+                        'label' => self::$module->l('Shipping cost product', 'ConfigFormCarriers'),
                         'desc' => self::$module->l(
                             'Enter a valid Tango product. This product will be used to synchronze shipping costs',
-                            'itsttangointegracion'
+                            'ConfigFormCarriers'
                         ),
                     )
                 ),
                 'submit' => array(
-                    'title' => self::$module->l('Save', 'itsttangointegracion'),
+                    'title' => self::$module->l('Save', 'ConfigFormCarriers'),
                     'type' => 'submit',
                     'class' => 'btn btn-default pull-right'
                 )
@@ -271,9 +281,9 @@ class ItstConfigFormsCarriers extends ItstConfigForms
     // Post Procesa agregar una regla
     protected static function postProcessNewRule()
     {
-        $id_shop = (int)Context::getContext()->shop->id;
-        $id_shop_group = (int)Context::getContext()->shop->id_shop_group;
-        $id_carrier = (int)Tools::getValue('id_carrier');
+        $id_shop = (int) Context::getContext()->shop->id;
+        $id_shop_group = (int) Context::getContext()->shop->id_shop_group;
+        $id_carrier = (int) Tools::getValue('id_carrier');
         $cod_transp = Tools::getValue('COD_TRANSP');
         $result = Db::getInstance()->getRow(
             'SELECT id_carrier_transporte FROM ' . _DB_PREFIX_ . bqSQL('itst_tango_carriers')
@@ -288,31 +298,31 @@ class ItstConfigFormsCarriers extends ItstConfigForms
 
             if (($result = Db::getInstance()->execute($query)) != false) {
                 self::$module->logger->addLog(
-                    self::$module->l('A new carrier rule has been added.'),
+                    self::$module->l('A new carrier rule has been added.', 'ConfigFormCarriers'),
                     Consts\SEVERITY_INFO,
                     null,
                     self::$module->name
                 );
-                return self::$module->setConfirmationMessage(self::$module->l('The rule has been added.'));
+                return self::$module->setConfirmationMessage(self::$module->l('The rule has been added.', 'ConfigFormCarriers'));
             }
             return self::$module->setErrorMessage(
-                self::$module->l('An error happened: the rule could not be added.')
+                self::$module->l('An error happened: the rule could not be added.', 'ConfigFormCarriers')
             );
         }
         return self::$module->setErrorMessage(
-            self::$module->l('The rule could not be added: Another rule for the same carrier already exists.')
+            self::$module->l('The rule could not be added: Another rule for the same carrier already exists.', 'ConfigFormCarriers')
         );
     }
     // Post Procesa actuaizar una regla
     protected static function postProcessUpdateRule()
     {
-        $id_carrier_transporte = (int)Tools::getValue('id_carrier_transporte');
+        $id_carrier_transporte = (int) Tools::getValue('id_carrier_transporte');
         if (!$id_carrier_transporte) {
             return false;
         }
-        $id_shop = (int)Context::getContext()->shop->id;
-        $id_shop_group = (int)Context::getContext()->shop->id_shop_group;
-        $id_carrier = (int)Tools::getValue('id_carrier');
+        $id_shop = (int) Context::getContext()->shop->id;
+        $id_shop_group = (int) Context::getContext()->shop->id_shop_group;
+        $id_carrier = (int) Tools::getValue('id_carrier');
         $cod_transp = Tools::getValue('COD_TRANSP');
 
         $result = Db::getInstance()->getRow(
@@ -325,7 +335,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
 
         if ($result) {
             return self::$module->setErrorMessage(
-                self::$module->l('The rule could not be updated: Another rule for the same carrier already exists.')
+                self::$module->l('The rule could not be updated: Another rule for the same carrier already exists.', 'ConfigFormCarriers')
             );
         }
 
@@ -334,39 +344,39 @@ class ItstConfigFormsCarriers extends ItstConfigForms
         $query = 'UPDATE ' . _DB_PREFIX_ . bqSQL('itst_tango_carriers')
             . ' SET `id_carrier` = ' . $id_carrier
             . ', `COD_TRANSP` = ' . $cod_transp
-            . ' WHERE `id_carrier_transporte` = ' . (int)$id_carrier_transporte;
+            . ' WHERE `id_carrier_transporte` = ' . (int) $id_carrier_transporte;
 
         if ((Db::getInstance()->execute($query)) != false) {
             self::$module->logger->addLog(
-                self::$module->l('A Carrier rule has been updated.'),
+                self::$module->l('A Carrier rule has been updated.', 'ConfigFormCarriers'),
                 Consts\SEVERITY_INFO,
                 null,
                 self::$module->name
             );
-            return self::$module->setConfirmationMessage(self::$module->l('The rule has been updated.'));
+            return self::$module->setConfirmationMessage(self::$module->l('The rule has been updated.', 'ConfigFormCarriers'));
         }
-        return self::$module->setErrorMessage(self::$module->l('The rule has not been updated'));
+        return self::$module->setErrorMessage(self::$module->l('The rule has not been updated', 'ConfigFormCarriers'));
     }
     // Post Procesa eliminar
     protected static function postProcessDeleteRule()
     {
-        $id_carrier_transporte = (int)Tools::getValue('id_carrier_transporte');
+        $id_carrier_transporte = (int) Tools::getValue('id_carrier_transporte');
         if (!$id_carrier_transporte) {
-            return self::$module->setErrorMessage(implode(self::$module->l('Empty rules can not been deleted')));
+            return self::$module->setErrorMessage(implode(self::$module->l('Empty rules can not been deleted', 'ConfigFormCarriers')));
         }
 
         $query = 'DELETE FROM ' . _DB_PREFIX_ . bqSQL('itst_tango_carriers')
-            . ' WHERE `id_carrier_transporte` = ' . (int)$id_carrier_transporte;
+            . ' WHERE `id_carrier_transporte` = ' . (int) $id_carrier_transporte;
         if (!Db::getInstance()->execute($query)) {
-            return self::$module->setErrorMessage(implode(self::$module->l('The rule has not been deleted')));
+            return self::$module->setErrorMessage(implode(self::$module->l('The rule has not been deleted', 'ConfigFormCarriers')));
         }
         self::$module->logger->addLog(
-            self::$module->l('A Carrier rule has been deleted.'),
+            self::$module->l('A Carrier rule has been deleted.', 'ConfigFormCarriers'),
             Consts\SEVERITY_INFO,
             null,
             self::$module->name
         );
-        return self::$module->setConfirmationMessage(self::$module->l('The rule has been deleted.'));
+        return self::$module->setConfirmationMessage(self::$module->l('The rule has been deleted.', 'ConfigFormCarriers'));
         /*
         return Tools::redirectAdmin($context->link->getAdminLink('AdminModules', false)
             . '&configure=' . self::$module->name
@@ -385,7 +395,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
         $form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => self::$module->l('Carrier Rule', array(), 'itsttangointegracion'),
+                    'title' => self::$module->l('Carrier Rule', 'ConfigFormCarriers'),
                     'icon' => 'icon-cogs'
                 ),
                 'input' => array(
@@ -395,7 +405,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                     ),
                     array(
                         'type' => 'select',
-                        'label' => self::$module->l('Carrier', array(), 'itsttangointegracion'),
+                        'label' => self::$module->l('Carrier', 'ConfigFormCarriers'),
                         'name' => 'id_carrier',
                         'options' => array(
                             'query' => self::getListaCarriers(),
@@ -405,9 +415,9 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                     ),
                     array(
                         'type' => 'select',
-                        'label' => self::$module->l('Tango Carrier', array(), 'itsttangointegracion'),
+                        'label' => self::$module->l('Tango Carrier', 'ConfigFormCarriers'),
                         'name' => 'COD_TRANSP',
-                        'desc' => self::$module->l('Select related Tango carrier', 'itsttangointegracion'),
+                        'desc' => self::$module->l('Select related Tango carrier', 'ConfigFormCarriers'),
                         'options' => array(
                             'query' => self::getTransportesOptions(),
                             'id' => 'COD_TRANSP',
@@ -417,7 +427,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
 
                 ),
                 'submit' => array(
-                    'title' => self::$module->l('Save', 'itsttangointegracion'),
+                    'title' => self::$module->l('Save', 'ConfigFormCarriers'),
                     'type' => 'submit',
                     'class' => 'btn btn-default pull-right'
                 )
@@ -462,16 +472,18 @@ class ItstConfigFormsCarriers extends ItstConfigForms
 
     protected static function renderRulesList()
     {
-        $helper = new HelperList();
         $context = Context::getContext();
-        $helper->title = self::$module->l('Carriers Rules');
+        $helper = new HelperList();
+
+        $helper->title = self::$module->l('Carriers Rules', 'ConfigFormCarriers');
         $helper->table = self::$module->name;
-        $helper->simple_header = true;
-        $helper->module = self::$module;
         $helper->no_link = true;
         $helper->shopLinkType = '';
         $helper->identifier = 'id_carrier_transporte';
         $helper->actions = array('edit', 'delete');
+
+        // $helper->simple_header = true;
+        // $helper->module = self::$module;
 
         $values = self::getCarriersRulesListValues();
         $helper->listTotal = count($values);
@@ -482,9 +494,9 @@ class ItstConfigFormsCarriers extends ItstConfigForms
                 . '&configure=' . self::$module->name
                 . '&tab_module=' . self::$module->tab
                 . '&module_name=' . self::$module->name
-                . '&selected_tab=' . 'carriers-settings'
-                . '&' . self::ADD_CARRIER_RULE . '=1&token=' . Tools::getAdminTokenLite('AdminModules'), 
-            'desc' => self::$module->l('Add new rule')
+                . '&' . self::ADD_CARRIER_RULE . '=1&token=' . Tools::getAdminTokenLite('AdminModules')
+                . '&selected_tab=' . 'carriers-settings',
+            'desc' => self::$module->l('Add new rule', 'ConfigFormCarriers')
         );
 
         $helper->token = Tools::getAdminTokenLite('AdminModules');
@@ -505,17 +517,17 @@ class ItstConfigFormsCarriers extends ItstConfigForms
     {
         return array(
             'name' => array(
-                'title' => self::$module->l('Carrier\'s name', 'itsttangointegracion'),
+                'title' => self::$module->l('Carrier\'s name', 'ConfigFormCarriers'),
                 'type' => 'text',
                 'orderby' => false
             ),
             'COD_TRANSP' => array(
-                'title' => self::$module->l('Tango Carrier Code', 'itsttangointegracion'),
+                'title' => self::$module->l('Tango Carrier Code', 'ConfigFormCarriers'),
                 'type' => 'text',
                 'orderby' => false
             ),
             'NOMBRE_TRA' => array(
-                'title' => self::$module->l('Tango Carrier', 'itsttangointegracion'),
+                'title' => self::$module->l('Tango Carrier', 'ConfigFormCarriers'),
                 'type' => 'text',
                 'orderby' => false
             ),
@@ -525,8 +537,8 @@ class ItstConfigFormsCarriers extends ItstConfigForms
     protected static function getCarriersRulesListValues()
     {
         $context = Context::getContext();
-        $id_shop = (int)$context->shop->id;
-        $id_shop_group = (int)$context->shop->id_shop_group;
+        $id_shop = (int) $context->shop->id;
+        $id_shop_group = (int) $context->shop->id_shop_group;
 
         $list = Carriers\ItstTangoCarriers::getCarriersRules($id_shop, $id_shop_group);
 
@@ -559,7 +571,7 @@ class ItstConfigFormsCarriers extends ItstConfigForms
     protected static function getListaCarriers()
     {
         $carriers = Carrier::getCarriers(
-            (int)Context::getContext()->language->id,
+            (int) Context::getContext()->language->id,
             true,
             false,
             false,

@@ -1,6 +1,7 @@
 # ItSt Integracion con Tango
 
 Modulo para [Prestashop](https://www.prestashop.com/es/1.7) que integra con [Axoft Tango](http://www.axoft.com/) mediante la API Rest de [ItStuff](https://itstuff.com.ar).
+Permite sincronizar pedidos, listas de precios, clientes entre otras opciones entre [Prestashop](https://www.prestashop.com/es/1.7) y [Axoft Tango](http://www.axoft.com/)
 
 # Instalación.
 
@@ -16,7 +17,61 @@ Instalar
 
 ## Configuración
 
-Todo
+Después de instalar el modulo, es necesario configurarlo. 
+
+### Configuración General
+
+La configuración general incluye parametros generales para el uso del moodulo y debe configurarse antes de poder configurar el resto de las opciones.
+
+![](documents/assets/images/config_1.jpg)
+
+* **Modo Producción** - Determina si el modulo esta activado
+* **WS Url** - Corresponde a la url donde el modulo va a encontrar la api
+* **API-KEY** - Clave de autenticación de la API
+* **Detener después de errores** - Algunos procesos automáticos como la sincronizacion de precios se detienen despues de encontrar la cantidad de errores definidos en este parámetro
+* **Nivel de logs** - Es el nivel de logs que el modulo va a registrar en el sistema de logs de prestashop. [Ver Logs](#logs)
+* **Grabar logs en archivo** - Opcionalmente el modulo puede generar logs detallados en un archivo de logs. No es recomendable activar esta opción en producción.
+
+### Configuración de Transportes
+
+Si se habilita la sincronizaciónd de transportes, cuando se sincronice un [pedido](#configuración-de-pedidos) los costos de envío se agregaran al pedido como un producto.
+
+![](documents/assets/images/config_2.jpg)
+
+* **Sincronizar costos de envio** - Cuando esta habilitado agregarán al pedido los costos de envío como un producto.
+* **Producto para costo de envío** - Este es el código del producto que se usará para sincronizar los costos de envío. El producto debe existir en Tango al momento de la configuración.
+
+#### Reglas de transportes
+
+Las reglas de transporte relacionan un transporte en [Prestashop](https://www.prestashop.com) con un transporte en Tango. Es necesario agregar una regla de transporte por cada transporte definido en [Prestashop](https://www.prestashop.com)
+
+### Configuración de Precios
+
+Si esta habilitado, el modulo puede sincronizar periodicamente los precios de Tango mediante el uso de [cron jobs](#cron-jobs). 
+> Para identificar los productos se debe incluir el **Código de Articulo** de Tango en el campo **Referencia** del producto o combinación en [Prestashop](https://www.prestashop.com)
+
+![](documents/assets/images/config_3.jpg)
+
+* **¿Cómo Sincronizar Precios?** - Cuando la sinrconización esta habilitada, muestra el link al job que sincroniza los precios.
+* **Sincronizar Precios** - Habilita la sincronización de precios
+* **Sincronizar precios para productos** - Cuando esta habilitada sincroniza precios de productos.
+* **Sincronizar precios para combinaciones** - Cuando esta habilitada sincroniza precios de combinaciones de productos.
+
+#### Monedas y Listas de Precios
+
+El modulo puede utilizar varias listas de precios para sincronizar los precios, verificandolas en el orden que se establecio al cargarlas. Una vez que un articulo es localizado en una lista de precios, ya no se siguen verificando las demñas.
+Si la lista es en _moneda extrangera_ el modulo consultará la ultima cotizacion de Tango para la moneda de la lista y convertira los valores.
+
+> Si se usan listas de precios en moneda extrangera es importante mantener las cotizaciones actualizadas en Tango
+
+> [Ver como configurar cron-jobs](#cron-jobs). 
+
+### Configuración de Pedidos
+
+## Logs
+
+## Cron Jobs
+
 
 # Changelog
 
@@ -63,7 +118,6 @@ Todo
 
 ## [1.4.2] - 2019-07-12
 ### Added
-- Sincronizacion de estados
 - Sincronizacion de Datos de Clientes
 
 ### Changed

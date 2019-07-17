@@ -94,8 +94,7 @@ class Pedidos
         // Extended order data
         $orderExtended = new \ItSt\PrestaShop\Tango\OrdersExtended($cart->id);
 
-        // Datos del Cliente
-        $customer = new \Customer($cart->id_customer);
+        // Datos Extendidos del Cliente
         $customerExtended = new ItSt\PrestaShop\Tango\CustomerExtended($this->variables['id_customer']);
         $customerExtended->syncTangoByContact();
         $customerExtended->save();

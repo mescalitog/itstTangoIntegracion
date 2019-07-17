@@ -1,27 +1,27 @@
 <?php
-/**
- * 2007-2019  PrestaShop
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to http://www.prestashop.com for more information.
- *
- * @author    itstuff.com.ar
- * @copyright Copyright (c) ItStuff [https://itstuff.com.ar]
- * @license   https://itstuff.com.ar/licenses/commercial-1.0.html Commercial License
- */
+/*
+* 2007-2015 PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+* @author    itstuff.com.ar
+* @copyright Copyright (c) ItStuff [https://itstuff.com.ar]
+* @license   https://itstuff.com.ar/licenses/commercial-1.0.html Commercial License
+*/
 
 namespace ItSt\PrestaShop\Tango\Forms;
 
@@ -48,7 +48,7 @@ use HelperList;
 use Db;
 use Context;
 
-class ItstConfigFormsPrices extends ItstConfigForms
+class ConfigFormPrices extends ItstConfigForms
 {
     const SETTINGS_SUBMIT = 'itst_config_lists_submit';
     const ADD_TO_LIST = 'itst_config_lists_add';
@@ -90,23 +90,23 @@ class ItstConfigFormsPrices extends ItstConfigForms
         if (!isset($api_version) || ($api_version == null)) {
             return $output .= '<div class="alert alert-warning">'
                 . '<p>'
-                . self::$module->l('There is no API status information', 'itsttangointegracion') . ' '
+                . self::$module->l('There is no API status information', 'ConfigFormPrices') . ' '
                 . '<br />'
                 . self::$module->l(
                     'Configure the API in General Settings and get a valid response to enable this tab',
-                    'itsttangointegracion'
+                    'ConfigFormPrices'
                 ) . ' '
                 . '</p>'
                 . '</div>';
         } elseif (version_compare($api_version, self::MIN_API_VERSION) < 0) {
             return $output .= '<div class="alert alert-warning">'
                 . '<p>'
-                . self::$module->l('Api version does not meet minimum requirements', 'itsttangointegracion') . ' '
+                . self::$module->l('Api version does not meet minimum requirements', 'ConfigFormPrices') . ' '
                 . '<br />' .
                 sprintf(
                     self::$module->l(
                         'This module requires at least API version %1$s and current version is %2$s',
-                        'itsttangointegracion'
+                        'ConfigFormPrices'
                     ),
                     self::MIN_API_VERSION,
                     $api_version
@@ -145,7 +145,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
                 . '&token=' . Tools::getAdminTokenLite('AdminModules');
         }
 
-        if (((bool)Tools::isSubmit(self::SUBMIT_ADD_TO_LIST) && isset($submit_ok) && (!$submit_ok))
+        if (((bool) Tools::isSubmit(self::SUBMIT_ADD_TO_LIST) && isset($submit_ok) && (!$submit_ok))
             || Tools::isSubmit(self::ADD_TO_LIST)
         ) {
             $output = $output
@@ -179,16 +179,16 @@ class ItstConfigFormsPrices extends ItstConfigForms
         foreach (array_keys($form_values) as $key) {
             Configuration::updateValue($key, Tools::getValue($key));
         }
-        return self::$module->setConfirmationMessage(self::$module->l('Settings updated.', self::$module->name));
+        return self::$module->setConfirmationMessage(self::$module->l('Settings updated.', 'ConfigFormPrices'));
     }
     // Post Procesa agregar una regla
     protected static function postProcessNewRule()
     {
-        $id_shop = (int)Context::getContext()->shop->id;
-        $id_shop_group = (int)Context::getContext()->shop->id_shop_group;
-        $order = (int)Tools::getValue('order');
-        $nro_de_list = (int)Tools::getValue('NRO_DE_LIS');
-        $id_moneda = (int)Tools::getValue('ID_MONEDA');
+        $id_shop = (int) Context::getContext()->shop->id;
+        $id_shop_group = (int) Context::getContext()->shop->id_shop_group;
+        $order = (int) Tools::getValue('order');
+        $nro_de_list = (int) Tools::getValue('NRO_DE_LIS');
+        $id_moneda = (int) Tools::getValue('ID_MONEDA');
 
         $query = 'INSERT INTO ' . _DB_PREFIX_ . bqSQL('itst_prices_list')
             . ' (`order`, `NRO_DE_LIS`, `ID_MONEDA`, `id_shop`, `id_shop_group`) '
@@ -197,55 +197,55 @@ class ItstConfigFormsPrices extends ItstConfigForms
         $result = Db::getInstance()->execute($query);
         if ($result != false) {
             self::$module->logger->addLog(
-                self::$module->l('A new price list has been added.'),
+                self::$module->l('A new price list has been added.', 'ConfigFormPrices'),
                 Consts\SEVERITY_INFO,
                 null,
                 self::$module->name
             );
-            return self::$module->setConfirmationMessage(self::$module->l('The list has been added.'));
+            return self::$module->setConfirmationMessage(self::$module->l('The list has been added.', 'ConfigFormPrices'));
         }
-        return self::$module->setErrorMessage(self::$module->l('An error happened: the list could not be added.'));
+        return self::$module->setErrorMessage(self::$module->l('An error happened: the list could not be added.', 'ConfigFormPrices'));
     }
     // Post Procesa actuaizar una regla
     protected static function postProcessUpdateRule()
     {
-        $id_prices_list = (int)Tools::getValue('id_prices_list');
+        $id_prices_list = (int) Tools::getValue('id_prices_list');
         if (!$id_prices_list) {
             return false;
         }
-        $order = (int)Tools::getValue('order');
-        $nro_de_list = (int)Tools::getValue('NRO_DE_LIS');
-        $id_moneda = (int)Tools::getValue('ID_MONEDA');
+        $order = (int) Tools::getValue('order');
+        $nro_de_list = (int) Tools::getValue('NRO_DE_LIS');
+        $id_moneda = (int) Tools::getValue('ID_MONEDA');
 
         $query = 'UPDATE ' . _DB_PREFIX_ . bqSQL('itst_prices_list')
             . ' SET `order` = ' . $order
             . ', `NRO_DE_LIS` = ' . $nro_de_list
             . ', `ID_MONEDA` = ' . $id_moneda
-            . ' WHERE `id_prices_list` = ' . (int)$id_prices_list;
+            . ' WHERE `id_prices_list` = ' . (int) $id_prices_list;
 
         if ((Db::getInstance()->execute($query)) != false) {
             self::$module->logger->addLog(
-                self::$module->l('A Price list has been updated.'),
+                self::$module->l('A Price list has been updated.', 'ConfigFormPrices'),
                 Consts\SEVERITY_INFO,
                 null,
                 self::$module->name
             );
-            return self::$module->setConfirmationMessage(self::$module->l('The price list has been updated.'));
+            return self::$module->setConfirmationMessage(self::$module->l('The price list has been updated.', 'ConfigFormPrices'));
         }
-        return self::$module->setErrorMessage(self::$module->l('The price list has not been updated'));
+        return self::$module->setErrorMessage(self::$module->l('The price list has not been updated', 'ConfigFormPrices'));
     }
     // Post Procesa eliminar
     protected static function postProcessDeleteRule()
     {
-        $id_prices_list = (int)Tools::getValue('id_prices_list');
+        $id_prices_list = (int) Tools::getValue('id_prices_list');
         if (!$id_prices_list) {
-            return self::$module->setErrorMessage(implode(self::$module->l('Empty list can not been deleted')));
+            return self::$module->setErrorMessage(implode(self::$module->l('Empty list can not been deleted', 'ConfigFormPrices')));
         }
 
         $query = 'DELETE FROM ' . _DB_PREFIX_ . bqSQL('itst_prices_list')
-            . ' WHERE `id_prices_list` = ' . (int)$id_prices_list;
+            . ' WHERE `id_prices_list` = ' . (int) $id_prices_list;
         if (!Db::getInstance()->execute($query)) {
-            return self::$module->setErrorMessage(implode(self::$module->l('The list has not been deleted')));
+            return self::$module->setErrorMessage(implode(self::$module->l('The list has not been deleted', 'ConfigFormPrices')));
         }
         self::$module->logger->addLog(
             self::$module->l('A Price List rule has been deleted.'),
@@ -253,7 +253,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
             null,
             self::$module->name
         );
-        return self::$module->setConfirmationMessage(self::$module->l('The list has been deleted.'));
+        return self::$module->setConfirmationMessage(self::$module->l('The list has been deleted.', 'ConfigFormPrices'));
         /*
         return Tools::redirectAdmin(
             self::$module->context->link->getAdminLink('AdminModules', false)
@@ -280,62 +280,84 @@ class ItstConfigFormsPrices extends ItstConfigForms
     {
         $enabled = Configuration::get(Consts\ITST_TANGO_PRICES_SYNC, false);
         $cronlink = Tools::htmlentitiesUTF8(self::getCronLink());
-        $cron_info = '<h4>' . self::$module->l('How to synchronize prices') . '</h4>'
-            . self::$module->l('Enable this feature to synchronize prices');
+        $cron_info = '<h4>' . self::$module->l('How to synchronize prices', 'ConfigFormPrices') . '</h4>'
+            . self::$module->l('Enable this feature to synchronize prices', 'ConfigFormPrices');
 
         $cron_info_link = '<h4>' . self::$module->l('How to synchronize prices') . '</h4>'
             . 'Use the following link to create a cron job for prices synchronization. <br>'
             . '<a href="' . $cronlink . '" target="_blank">' . $cronlink . '</a><br>'
-            . self::$module->l(
-                'Ask your hosting provider to setup a "Cron job" to load the above URL at the time you would like'
-            );
+            . self::$module->l('Ask your hosting provider to setup a "Cron job" to load the above URL at the time you would like', 'ConfigFormPrices');
 
         $description = ($enabled) ? $cron_info_link : $cron_info;
 
         $form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => self::$module->l('Prices Settings', 'itsttangointegracion'),
+                    'title' => self::$module->l('Prices Settings', 'ConfigFormPrices'),
                     'icon' => 'icon-usd',
                 ),
                 'description' => $description,
                 'input' => array(
                     array(
                         'type' => 'switch',
-                        'label' => self::$module->l('Synchronize Prices', 'itsttangointegracion'),
+                        'label' => self::$module->l('Synchronize Prices', 'ConfigFormPrices'),
                         'name' => Consts\ITST_TANGO_PRICES_SYNC,
                         'is_bool' => true,
-                        'desc' => self::$module->l('Enable the cron job that synchronize prices'),
+                        'desc' => self::$module->l('Enable the cron job that synchronize prices', 'ConfigFormPrices'),
                         'values' => array(
-                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
-                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => self::$module->l('Enabled', 'ConfigFormPrices')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => self::$module->l('Disabled', 'ConfigFormPrices')
+                            )
                         ),
                     ),
                     array(
                         'type' => 'switch',
-                        'label' => self::$module->l('Synchronize Price for Products', 'itsttangointegracion'),
+                        'label' => self::$module->l('Synchronize Price for Products', 'ConfigFormPrices'),
                         'name' => Consts\ITST_TANGO_PRICES_SYNC_PRODUCTS,
                         'is_bool' => true,
-                        'desc' => self::$module->l('When enable will synchronize prices for products'),
+                        'desc' => self::$module->l('When enable will synchronize prices for products', 'ConfigFormPrices'),
                         'values' => array(
-                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
-                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => self::$module->l('Enabled', 'ConfigFormPrices')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => self::$module->l('Disabled', 'ConfigFormPrices')
+                            )
                         )
                     ),
                     array(
                         'type' => 'switch',
-                        'label' => self::$module->l('Synchronize Price for Combinations', 'itsttangointegracion'),
+                        'label' => self::$module->l('Synchronize Price for Combinations', 'ConfigFormPrices'),
                         'name' => Consts\ITST_TANGO_PRICES_SYNC_COMBINATIONS,
                         'is_bool' => true,
-                        'desc' => self::$module->l('When enable will synchronize prices for products combinations'),
+                        'desc' => self::$module->l('When enable will synchronize prices for products combinations', 'ConfigFormPrices'),
                         'values' => array(
-                            array('id' => 'active_on', 'value' => true, 'label' => self::$module->l('Enabled')),
-                            array('id' => 'active_off', 'value' => false, 'label' => self::$module->l('Disabled'))
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => self::$module->l('Enabled', 'ConfigFormPrices')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => self::$module->l('Disabled', 'ConfigFormPrices')
+                            )
                         ),
                     ),
                 ),
                 'submit' => array(
-                    'title' => self::$module->l('Save', 'itsttangointegracion'),
+                    'title' => self::$module->l('Save', 'ConfigFormPrices'),
                     'type' => 'submit',
                     'class' => 'btn btn-default pull-right'
                 )
@@ -369,7 +391,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
         $form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => self::$module->l('Price List', array(), 'itsttangointegracion'),
+                    'title' => self::$module->l('Price List', 'ConfigFormPrices'),
                     'icon' => 'icon-cogs'
                 ),
                 'input' => array(
@@ -380,21 +402,22 @@ class ItstConfigFormsPrices extends ItstConfigForms
                     array(
                         'type' => 'text',
                         'name' => 'order',
+                        'class' => 'input fixed-width-md',
                         'required' => true,
-                        'label' => self::$module->l('List evaluation order'),
+                        'label' => self::$module->l('List evaluation order', 'ConfigFormPrices'),
                         'desc' => self::$module->l(
                             'Determine the order this list will be evaluated.',
-                            'itsttangointegracion'
+                            'ConfigFormPrices'
                         )
                     ),
                     array(
                         'type' => 'select',
                         'name' => 'NRO_DE_LIS',
                         'required' => true,
-                        'label' => self::$module->l('Local money price list'),
+                        'label' => self::$module->l('Local money price list', 'ConfigFormPrices'),
                         'desc' => self::$module->l(
                             'Select the list this module will use to obtain local money prices',
-                            'itsttangointegracion'
+                            'ConfigFormPrices'
                         ),
                         'options' => array(
                             'query' => self::getListadePreciosOptions(),
@@ -404,7 +427,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
                     array(
                         'type' => 'select',
                         'name' => 'ID_MONEDA',
-                        'desc' => self::$module->l('Currency', 'itsttangointegracion'),
+                        'desc' => self::$module->l('Currency', 'ConfigFormPrices'),
                         'options' => array(
                             'query' => self::getMonedasOptions(),
                             'id' => 'ID_MONEDA', 'name' => 'COD_MONEDA'
@@ -413,7 +436,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
                     array('type' => 'free', 'name' => 'iso_warning', 'col' => 9, 'offset' => 0)
                 ),
                 'submit' => array(
-                    'title' => self::$module->l('Save', 'itsttangointegracion'),
+                    'title' => self::$module->l('Save', 'ConfigFormPrices'),
                     'type' => 'submit',
                     'class' => 'btn btn-default pull-right'
                 )
@@ -467,7 +490,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
         $context = Context::getContext();
         $helper = new HelperList();
 
-        $helper->title = self::$module->l('Currency and Price Lists');
+        $helper->title = self::$module->l('Currency and Price Lists', 'ConfigFormPrices');
         $helper->table = self::$module->name;
         $helper->no_link = true;
         $helper->shopLinkType = '';
@@ -485,7 +508,7 @@ class ItstConfigFormsPrices extends ItstConfigForms
                 . '&module_name=' . self::$module->name
                 . '&' . self::ADD_TO_LIST . '=1&token=' . Tools::getAdminTokenLite('AdminModules')
                 . '&selected_tab=' . 'prices-settings',
-            'desc' => self::$module->l('Add new rule')
+            'desc' => self::$module->l('Add new rule', 'ConfigFormPrices')
         );
 
         $helper->token = Tools::getAdminTokenLite('AdminModules');
@@ -506,23 +529,23 @@ class ItstConfigFormsPrices extends ItstConfigForms
     {
         return array(
             'order' => array(
-                'title' => self::$module->l('List Order', 'itsttangointegracion'),
+                'title' => self::$module->l('List Order', 'ConfigFormPrices'),
                 'type' => 'number', 'orderby' => false
             ),
             'NRO_DE_LIS' => array(
-                'title' => self::$module->l('List ID', 'itsttangointegracion'),
+                'title' => self::$module->l('List ID', 'ConfigFormPrices'),
                 'type' => 'number', 'orderby' => false
             ),
             'NOMBRE_LIS' => array(
-                'title' => self::$module->l('List name', 'itsttangointegracion'),
+                'title' => self::$module->l('List name', 'ConfigFormPrices'),
                 'type' => 'text', 'orderby' => false
             ),
             'ID_MONEDA' => array(
-                'title' => self::$module->l('Currency ID', 'itsttangointegracion'),
+                'title' => self::$module->l('Currency ID', 'ConfigFormPrices'),
                 'type' => 'number', 'orderby' => false
             ),
             'COD_MONEDA' => array(
-                'title' => self::$module->l('Currency Code', 'itsttangointegracion'),
+                'title' => self::$module->l('Currency Code', 'ConfigFormPrices'),
                 'type' => 'text', 'orderby' => false
             ),
         );
@@ -531,8 +554,8 @@ class ItstConfigFormsPrices extends ItstConfigForms
     protected static function getListValues()
     {
         $context = Context::getContext();
-        $id_shop = (int)$context->shop->id;
-        $id_shop_group = (int)$context->shop->id_shop_group;
+        $id_shop = (int) $context->shop->id;
+        $id_shop_group = (int) $context->shop->id_shop_group;
 
         $list = Prices\ItstTangoPrices::getPricesLists($id_shop, $id_shop_group);
 

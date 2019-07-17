@@ -33,7 +33,7 @@
             <div class="panel-heading-action">
                 <a class="btn btn-default" href="{$url|escape:'html':'UTF-8'}&amp;back={$smarty.server.REQUEST_URI|urlencode}">
                     <i class="icon-refresh" aria-hidden="true"></i>
-                    {l s='Sync'}
+                    {l s='Sync', mod='Modules.itsttangointegracion'}
                 </a>
             </div>
         </div>
@@ -42,31 +42,31 @@
                 <div class="col-lg-6">
                     <div class="form-horizontal">
                         <div class="row">
-                            <label class="control-label col-lg-3">{l s='Código de Cliente'}</label>
+                            <label class="control-label col-lg-3">{l s='Customer Code', mod='Modules.itsttangointegracion'}</label>
                             <div class="col-lg-9">
                                 <p class="form-control-static">{$customerExtended->COD_CLIENT}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="control-label col-lg-3">{l s='CUIT'}</label>
+                            <label class="control-label col-lg-3">{l s='Vat Number', mod='Modules.itsttangointegracion'}</label>
                             <div class="col-lg-9">
                                 <p class="form-control-static">{$customerExtended->CUIT}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="control-label col-lg-3">{l s='Razón Social'}</label>
+                            <label class="control-label col-lg-3">{l s='Business Name', mod='Modules.itsttangointegracion'}</label>
                             <div class="col-lg-9">
                                 <p class="form-control-static">{$customerExtended->RAZON_SOCI}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="control-label col-lg-3">{l s='Creado'}</label>
+                            <label class="control-label col-lg-3">{l s='Created at', mod='Modules.itsttangointegracion'}</label>
                             <div class="col-lg-9">
                                 <p class="form-control-static">{$customerExtended->date_add}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="control-label col-lg-3">{l s='Actualizado'}</label>
+                            <label class="control-label col-lg-3">{l s='Updated at', mod='Modules.itsttangointegracion'}</label>
                             <div class="col-lg-9">
                                 <p class="form-control-static">{$customerExtended->date_upd}</p>
                             </div>
@@ -77,7 +77,7 @@
                 <div class="col-lg-6">
                     <div class="form-horizontal">
                         <div class="row">
-                            <label class="control-label col-lg-3">{l s='Lista de Precios'}</label>
+                            <label class="control-label col-lg-3">{l s='Price List', mod='Modules.itsttangointegracion'}</label>
                             <div class="col-lg-9">
                                 <p class="form-control-static">{$customerExtended->NRO_LISTA}</p>
                             </div>

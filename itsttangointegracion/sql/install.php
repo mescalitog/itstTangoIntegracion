@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 2007-2019  PrestaShop
  *
@@ -126,6 +125,7 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'itst_customer_extended`
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 ';
+// 1.4.1 relacion estados pedidos tango - prestashop
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {

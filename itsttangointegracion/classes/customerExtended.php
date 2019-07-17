@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 2007-2019  PrestaShop
  *
@@ -140,7 +139,7 @@ class CustomerExtended extends ObjectModel
             foreach ($direcciones as $direccion) {
 
                 // Busco la direccion por alias
-                if (!Address::aliasExist($direccion['COD_DIRECCION_ENTREGA'], false, (int) $customer->id )) {
+                if (!Address::aliasExist($direccion['COD_DIRECCION_ENTREGA'], false, (int) $customer->id)) {
                     $address = new Address(
                         null
                     );
@@ -150,7 +149,7 @@ class CustomerExtended extends ObjectModel
                     $address->city = $direccion['LOCALIDAD'];
                     $address->other = $direccion['ID_DIRECCION_ENTREGA'];
                     $address->alias = $direccion['COD_DIRECCION_ENTREGA'];
-                    
+
                     $address->company = $customer->company;
                     $address->vat = $customer->siret;
 

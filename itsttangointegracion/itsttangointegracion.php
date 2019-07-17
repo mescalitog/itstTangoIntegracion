@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 2007-2019  PrestaShop
  *
@@ -124,8 +123,7 @@ class ItstTangoIntegracion extends Module
 
         include(dirname(__FILE__) . '/sql/install.php');
 
-        if (
-            parent::install() &&
+        if (parent::install() &&
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader') &&
             $this->registerHook('actionOrderStatusPostUpdate') &&
@@ -133,8 +131,7 @@ class ItstTangoIntegracion extends Module
             $this->registerHook('displayCheckoutSummaryTop') &&
             $this->registerHook('displayBeforeCarrier') &&
             $this->registerHook('displayAdminCustomers') &&
-            $this->registerHook('actionCustomerAccountAdd') 
-        ) {
+            $this->registerHook('actionCustomerAccountAdd')) {
             return true;
         } else { // if something wrong return false
             $this->_errors[] = $this->l('There was an error during the installation. Please contact us at arg_itsupport@itstuff.com.ar.');
@@ -181,8 +178,7 @@ class ItstTangoIntegracion extends Module
         include(dirname(__FILE__) . '/sql/uninstall.php');
 
         // unregister hook
-        if (
-            parent::uninstall() &&
+        if (parent::uninstall() &&
             $this->unregisterHook('header') &&
             $this->unregisterHook('backOfficeHeader') &&
             $this->unregisterHook('actionOrderStatusPostUpdate') &&
@@ -190,8 +186,7 @@ class ItstTangoIntegracion extends Module
             $this->unregisterHook('displayCheckoutSummaryTop') &&
             $this->unregisterHook('displayBeforeCarrier') &&
             $this->unregisterHook('displayAdminCustomers') &&
-            $this->unregisterHook('actionCustomerAccountAdd') 
-        ) {
+            $this->unregisterHook('actionCustomerAccountAdd')) {
             return true;
         } else {
             $this->_errors[] = $this->l('There was an error during the uninstallation. Please contact us at arg_itsupport@itstuff.com.ar.');
@@ -202,7 +197,7 @@ class ItstTangoIntegracion extends Module
     public function getContent()
     {
         $output = null;
-        Forms\ItstConfigFormsTabs::init($this);
+        Forms\ConfigFormTabs::init($this);
 
         $store_url = $this->context->link->getBaseLink();
         // variables para el template
@@ -219,7 +214,7 @@ class ItstTangoIntegracion extends Module
             'prices_cron' => $store_url . $this->_path . '/prices-cron.php?token=' . Helpers\ItStTools::getSecureKey()
                 . '&id_shop=' . $this->context->shop->id,
 
-            "tabs" => Forms\ItstConfigFormsTabs::getConfigTabs(),
+            "tabs" => Forms\ConfigFormTabs::getConfigTabs(),
             "selectedTab" => $this->getSelectedTab()
         );
 
