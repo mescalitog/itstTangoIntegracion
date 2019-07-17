@@ -23,7 +23,7 @@ Después de instalar el modulo, es necesario configurarlo.
 
 La configuración general incluye parametros generales para el uso del moodulo y debe configurarse antes de poder configurar el resto de las opciones.
 
-![](raw/documents/assets/images/config_1.png)
+![](raw/documents/assets/images/config_1.jpg)
 
 * **Modo Producción** - Determina si el modulo esta activado
 * **WS Url** - Corresponde a la url donde el modulo va a encontrar la api
@@ -36,7 +36,7 @@ La configuración general incluye parametros generales para el uso del moodulo y
 
 Si se habilita la sincronizaciónd de transportes, cuando se sincronice un [pedido](#orders-settings) los costos de envío se agregaran al pedido como un producto.
 
-![](raw/documents/assets/images/config_2.png)
+![](raw/documents/assets/images/config_2.jpg)
 
 * **Sincronizar costos de envio** - Cuando esta habilitado agregarán al pedido los costos de envío como un producto.
 * **Producto para costo de envío** - Este es el código del producto que se usará para sincronizar los costos de envío. El producto debe existir en Tango al momento de la configuración.
@@ -50,7 +50,7 @@ Las reglas de transporte relacionan un transporte en [Prestashop](https://www.pr
 Si esta habilitado, el modulo puede sincronizar periodicamente los precios de Tango mediante el uso de [cron jobs](#cron-jobs). 
 > Para identificar los productos se debe incluir el **Código de Articulo** de Tango en el campo **Referencia** del producto o combinación en [Prestashop](https://www.prestashop.com)
 
-![](raw/documents/assets/images/config_3.png)
+![](raw/documents/assets/images/config_3.jpg)
 
 * **¿Cómo Sincronizar Precios?** - Cuando la sinrconización esta habilitada, muestra el link al job que sincroniza los precios.
 * **Sincronizar Precios** - Habilita la sincronización de precios
@@ -93,7 +93,7 @@ Tambien se crean las direcciones que existan en tango.
 
 La sincronización tambien puede hacerse manualmente, desde el modulo de administración de clientes en Prestashop.
 
-![](raw/documents/assets/images/config_4.png)
+![](raw/documents/assets/images/config_4.jpg)
 
 
 ## <a name="logs"></a>Logs
